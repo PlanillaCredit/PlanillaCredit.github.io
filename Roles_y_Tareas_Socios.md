@@ -62,7 +62,7 @@
   - ¿Quién autoriza la distribución a los proveedores?
   - ¿Con qué periodicidad?
 - [ ] **Definir la política de mora y cobranza** para casos de empleados que dejan la empresa. Basar en el proceso actual de la empresa de préstamos.
-- [ ] **Diseñar la estructura de precios SaaS** (validar los rangos del documento de proyecto o ajustarlos al mercado boliviano).
+- [ ] **Definir la estructura de comisiones** (validar los porcentajes del documento de proyecto: 1.5%-3.5% según tipo de crédito, ajustar si es necesario al mercado boliviano).
 
 ---
 
@@ -185,7 +185,7 @@
   - Presentar el proyecto y explicar el proceso de integración de planilla.
   - Solicitar un archivo Excel de planilla de muestra (puede ser con datos ficticios o anonimizados).
   - Levantar las dudas o resistencias del área de RRHH para anticiparlas en el diseño de la plataforma.
-- [ ] **Validar el modelo de precios SaaS** con las empresas piloto — ¿los rangos de precios del documento son aceptables para el mercado boliviano?
+- [ ] **Validar la estructura de comisiones** con las empresas piloto — ¿los porcentajes propuestos (2-3.5% para productos, 1.5-2.5% para préstamos) son aceptables para el mercado boliviano? La plataforma es GRATUITA, solo se cobra comisión por crédito.
 - [ ] **Definir la propuesta de valor comercial** para cada tipo de empresa (empleadora y proveedora) en lenguaje simple y sin tecnicismos.
 
 ---
@@ -217,7 +217,7 @@
   - Invitar a las empresas afiliadas y a prospectos.
   - Demo en vivo de la plataforma.
   - Comunicado de prensa (si aplica).
-- [ ] **Diseñar el plan de comisiones o incentivos** para los primeros 6 meses (ej: 3 meses de SaaS gratis para las primeras empresas, descuentos en comisión para proveedores fundadores).
+- [ ] **Diseñar el plan de incentivos** para los primeros 6 meses (ej: comisiones reducidas al 1.5% fijo para los primeros 5 proveedores fundadores durante los primeros 3 meses, soporte de onboarding personalizado gratuito).
 - [ ] **Crear las redes sociales de la plataforma** (LinkedIn, Facebook, Instagram según el público objetivo boliviano).
 
 ---

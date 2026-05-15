@@ -45,7 +45,7 @@ La plataforma es operada por la empresa cliente, entidad financiera ya regulada 
 | **Empleado** | Sin acceso a crédito bancario formal o con tasas prohibitivas | Crédito accessible, sin trámites, descuento automático sin gestión personal |
 | **Empresa Empleadora** | Empleados con estrés financiero afectan la productividad | Beneficio laboral diferenciador sin costo para la empresa |
 | **Empresa Proveedora** | Alto riesgo de mora e incobrabilidad en ventas a crédito | Cartera garantizada, cobro delegado a la planilla, más ventas |
-| **Operador (cliente)** | — | Comisiones por intermediación + SaaS recurrente |
+| **Operador (cliente)** | — | Comisiones por intermediación (plataforma 100% gratuita) |
 
 ### Indicadores Clave del Proyecto
 
@@ -173,47 +173,39 @@ La **Ley N° 164** y el **Decreto Supremo N° 1793** reconocen la validez de la 
 
 ## 3.1 Descripción del Modelo
 
-PlanillaCredit opera un modelo de negocio de plataforma de doble cara (two-sided marketplace) con una capa adicional de servicios financieros. El operador cobra por conectar a los actores y por la infraestructura que hace posible el descuento de planilla.
+PlanillaCredit opera un modelo de negocio de plataforma de doble cara (two-sided marketplace) con una capa adicional de servicios financieros. El modelo se diferencia por ser **100% gratuito** para las empresas (empleadoras y proveedoras), eliminando completamente las barreras de entrada y acelerando la adopción.
+
+El operador genera ingresos exclusivamente a través de una **comisión sobre cada crédito originado**, la cual se cobra **ANTES del desembolso** al proveedor. Esto significa que:
+
+- ✅ **Cero riesgo de incobrabilidad** de comisiones (se descuenta antes de transferir).
+- ✅ **Incentivo alineado**: solo ganamos cuando generamos valor (un crédito exitoso).
+- ✅ **Propuesta comercial imbatible**: "Únete gratis, paga solo cuando vendas/prestes".
 
 ## 3.2 Fuentes de Ingreso
 
-### Ingreso 1 — SaaS Empresas Empleadoras (Recurrente)
-Tarifa mensual por tener la planilla afiliada y activa en la plataforma.
+### Ingreso Principal — Comisión por Transacción (Variable)
+Porcentaje aplicado sobre el monto de cada crédito originado en la plataforma, **cobrado ANTES del desembolso al proveedor**.
 
-| Plan | Empleados en Planilla | Precio Mensual |
-|------|----------------------|---------------|
-| Starter | Hasta 50 | USD 60 |
-| Business | 51 – 200 | USD 120 |
-| Enterprise | 201 – 500 | USD 220 |
-| Corporate | 500+ | Cotización especial |
+| Tipo de Crédito | Comisión de la Plataforma | Ejemplo |
+|----------------|--------------------------|---------|
+| Productos físicos a crédito | 2.0% – 3.5% del monto del crédito | Crédito de USD 1,000 → Comisión USD 25 (2.5%) → Proveedor recibe USD 975 |
+| Préstamos en efectivo | 1.5% – 2.5% del monto desembolsado | Préstamo de USD 500 → Comisión USD 12.50 (2.5%) → Proveedor recibe USD 487.50 |
 
-### Ingreso 2 — SaaS Empresas Proveedoras (Recurrente)
-Tarifa mensual por tener presencia activa en la plataforma con catálogo y gestión de créditos.
+**Ventaja clave del modelo:**
+- La plataforma retiene automáticamente su comisión del flujo de pago, antes de transferir el saldo al proveedor.
+- No hay facturación mensual, cobros pendientes ni gestión de morosidad de clientes.
+- El flujo es: `Empresa Empleadora → Plataforma retiene comisión → Proveedor recibe neto`.
 
-| Plan | Volumen Cartera Activa | Precio Mensual |
-|------|----------------------|---------------|
-| Basic | Hasta USD 10,000 | USD 80 |
-| Standard | USD 10,001 – 50,000 | USD 160 |
-| Premium | USD 50,001+ | USD 300 |
-
-### Ingreso 3 — Comisión por Transacción (Variable)
-Porcentaje aplicado sobre el monto de cada crédito originado en la plataforma.
-
-| Tipo de Crédito | Comisión de la Plataforma |
-|----------------|--------------------------|
-| Productos físicos a crédito | 2.0% – 3.5% del monto del crédito |
-| Préstamos en efectivo | 1.5% – 2.5% del monto desembolsado |
-
-### Ingreso 4 — Comisión de Cobranza (Condicional)
-Si el operador asume la gestión activa de cobranza para casos de empleados que abandonan la empresa:
+### Ingreso Secundario — Comisión de Cobranza (Condicional — Fase 3)
+Si el operador asume la gestión activa de cobranza para casos de empleados que abandonan la empresa antes de terminar de pagar:
 
 - 8% – 15% sobre el monto recuperado en gestión extrajudicial.
 - 15% – 25% sobre el monto recuperado en gestión prejudicial/judicial.
 
-### Ingreso 5 — Módulos Premium (Futuro — Fase 3)
-- Scoring crediticio avanzado con historial de la plataforma: USD 0.50 por consulta.
+### Ingreso Futuro — Módulos Premium (Fase 3+)
+- Scoring crediticio avanzado con historial de la plataforma: USD 0.30 – 0.50 por consulta.
 - Consultas a INFOCRED (Buró de Crédito Bolivia): según tarifa INFOCRED + margen.
-- API de integración para sistemas externos: USD 150/mes adicional.
+- API de integración para sistemas externos: Modelo por uso o tarifa fija según volumen.
 
 ## 3.3 Estructura de Costos del Operador
 
@@ -228,11 +220,26 @@ Si el operador asume la gestión activa de cobranza para casos de empleados que 
 
 ## 3.4 Punto de Equilibrio
 
-Con el modelo de precios propuesto, el punto de equilibrio operativo se alcanza aproximadamente con:
-- **6 empresas empleadoras** (mix de planes) + **4 empresas proveedoras** + **volumen mínimo de transacciones**.
-- Esto equivale a ingresos mensuales de aproximadamente **USD 1,500 – 2,000**, cubriendo costos operativos.
+Con el modelo de comisiones puro (sin ingresos SaaS), el punto de equilibrio depende exclusivamente del **volumen de créditos originados**:
 
-A partir del mes 8-10 (con 8-12 empresas afiliadas), la plataforma genera margen positivo consistente.
+**Cálculo conservador:**
+- Costos operativos mensuales: USD 1,500 – 2,000
+- Ticket promedio de crédito: USD 500
+- Comisión promedio: 2.5%
+- Comisión por crédito: USD 12.50
+
+**Créditos necesarios para equilibrio:** 120 – 160 créditos/mes
+
+**Escenario realista:**
+Con 6-10 empresas empleadoras afiliadas (promedio 80 empleados cada una = 480-800 empleados totales) y una tasa de penetración del 20-25% (empleados que toman al menos un crédito al año), se generan aproximadamente:
+
+- **100-150 créditos/mes** en los primeros 6-8 meses.
+- Punto de equilibrio alcanzado en **mes 8-12** desde el lanzamiento.
+
+**Ventaja del modelo gratuito:**
+- Las empresas se afilian sin fricción (no pagan nada por estar en la plataforma).
+- La adopción comercial es significativamente más rápida que con un modelo SaaS.
+- A partir del mes 10-14, con 10-15 empresas, la plataforma genera margen positivo consistente de USD 1,000-2,500/mes.
 
 ---
 
@@ -284,10 +291,10 @@ A partir del mes 8-10 (con 8-12 empresas afiliadas), la plataforma genera margen
 |--------|---------|
 | Inversión inicial de desarrollo | USD 28,000 – 37,000 (Fases 1+2) |
 | Tiempo de recuperación de inversión | 18 – 24 meses desde lanzamiento |
-| Ingresos recurrentes desde el mes 1 | Sí (SaaS) |
+| Ingresos desde el inicio | Sí (comisiones por transacción) |
 | Escalabilidad sin costos lineales | Sí — el costo marginal de agregar un usuario es mínimo |
 
-**Veredicto:** La inversión es recuperable. El modelo de ingresos recurrentes (SaaS) da previsibilidad financiera desde el inicio.
+**Veredicto:** La inversión es recuperable. El modelo de plataforma gratuita acelera la adopción y los ingresos crecen proporcionalmente al volumen de créditos.
 
 ## 4.5 Factibilidad Operativa ✅ VIABLE
 
@@ -944,19 +951,24 @@ Estos costos son del operador de la plataforma una vez en producción, no son co
 
 ## 10.1 Proyección de Ingresos del Operador (Año 1)
 
-Proyección conservadora basada en la expectativa inicial de 5-10 empresas y ~500 empleados.
+Proyección conservadora basada en la expectativa inicial de 5-10 empresas y ~500 empleados. **Solo comisiones, plataforma gratuita.**
 
-| Mes | Empresas Empleadoras | Empresas Proveedoras | Empleados Activos | Créditos Otorgados | Ingresos SaaS (USD) | Comisiones (USD) | Total Ingresos (USD) |
-|-----|---------------------|---------------------|------------------|-------------------|---------------------|-----------------|---------------------|
-| 1-2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 *(desarrollo)* |
-| 3-4 | 1-2 | 1 | 50 | 10 | 140 | 300 | ~440 |
-| 5 | 2-3 | 2 | 100 | 25 | 300 | 750 | ~1,050 |
-| 6 | 3-4 | 2-3 | 180 | 40 | 500 | 1,200 | ~1,700 |
-| 7-8 | 4-6 | 3-4 | 280 | 70 | 800 | 2,100 | ~2,900 |
-| 9-10 | 6-8 | 4-5 | 400 | 110 | 1,200 | 3,300 | ~4,500 |
-| 11-12 | 8-12 | 5-7 | 600 | 180 | 1,800 | 5,400 | ~7,200 |
+| Mes | Empresas Empleadoras | Empresas Proveedoras | Empleados Activos | Créditos Otorgados | Ticket Promedio | Comisión Prom. | Total Ingresos (USD) |
+|-----|---------------------|---------------------|------------------|-------------------|-----------------|---------------|---------------------|
+| 1-2 | 0 | 0 | 0 | 0 | — | — | 0 *(desarrollo)* |
+| 3-4 | 1-2 | 1 | 50 | 8 | USD 400 | 2.5% | ~80 |
+| 5 | 2-3 | 2 | 100 | 20 | USD 450 | 2.5% | ~225 |
+| 6 | 3-4 | 2-3 | 180 | 40 | USD 500 | 2.5% | ~500 |
+| 7-8 | 4-6 | 3-4 | 280 | 70 | USD 500 | 2.5% | ~875 |
+| 9-10 | 6-8 | 4-5 | 400 | 120 | USD 550 | 2.5% | ~1,650 |
+| 11-12 | 8-12 | 5-7 | 600 | 180 | USD 600 | 2.5% | ~2,700 |
 
-**Ingreso acumulado estimado Año 1:** USD 35,000 – 55,000
+**Ingreso acumulado estimado Año 1:** USD 18,000 – 28,000
+
+**Notas:**
+- Los créditos otorgados asumen una tasa de penetración inicial del 15-25% de los empleados activos.
+- El ticket promedio aumenta gradualmente a medida que los empleados ganan confianza en la plataforma.
+- La comisión promedio de 2.5% es un promedio ponderado entre productos (2.5-3.5%) y préstamos (1.5-2.5%).
 
 ## 10.2 Proyección Año 2 (Operación Estabilizada)
 
@@ -964,21 +976,25 @@ Con 15-25 empresas afiliadas y 1,000-2,000 empleados activos:
 
 | Concepto | Estimación Mensual |
 |---------|-------------------|
-| Ingresos SaaS (empleadoras + proveedoras) | USD 3,500 – 6,000 |
-| Comisiones por transacción | USD 8,000 – 18,000 |
-| **Total ingresos mensuales** | **USD 11,500 – 24,000** |
-| Costos operativos mensuales | USD 1,500 – 3,000 |
-| **Margen operativo mensual** | **USD 9,000 – 21,000** |
+| Créditos mensuales | 250 – 450 |
+| Ticket promedio | USD 600 – 800 |
+| Volumen total mensual | USD 150,000 – 360,000 |
+| Comisión promedio | 2.5% |
+| **Total ingresos mensuales** | **USD 3,750 – 9,000** |
+| Costos operativos mensuales | USD 1,800 – 3,200 |
+| **Margen operativo mensual** | **USD 2,000 – 5,800** |
 
-**Ingreso anual estimado Año 2:** USD 138,000 – 288,000
+**Ingreso anual estimado Año 2:** USD 45,000 – 108,000
 
 ## 10.3 Punto de Equilibrio de la Inversión
 
-| Escenario | Inversión (Fases 1+2) | Ingresos Mensuales al Alcanzar Equilibrio | Tiempo Estimado |
-|-----------|----------------------|------------------------------------------|-----------------|
-| Conservador | USD 30,000 | USD 1,500/mes | 20 meses desde inicio |
-| Moderado | USD 30,000 | USD 3,000/mes | 14 meses desde inicio |
-| Optimista | USD 30,000 | USD 5,000/mes | 10 meses desde inicio |
+| Escenario | Inversión (Fases 1+2) | Volumen Mensual Necesario | Tiempo Estimado |
+|-----------|----------------------|--------------------------|-----------------|
+| Conservador | USD 30,000 | USD 60,000 en créditos (~USD 1,500 comisiones) | 18-20 meses |
+| Moderado | USD 30,000 | USD 120,000 en créditos (~USD 3,000 comisiones) | 12-14 meses |
+| Optimista | USD 30,000 | USD 200,000 en créditos (~USD 5,000 comisiones) | 8-10 meses |
+
+**Ventaja del modelo gratuito:** Aunque los ingresos iniciales son más bajos que en un modelo SaaS+comisión, la **velocidad de adopción es significativamente mayor** al eliminar la fricción del pago mensual. El punto de equilibrio se alcanza con menor cantidad de empresas, pero mayor volumen transaccional.
 
 ---
 
@@ -1008,8 +1024,8 @@ Con 15-25 empresas afiliadas y 1,000-2,000 empleados activos:
 - Contingencia: Si el Modelo B es inviable, el negocio sigue funcionando con Modelo A.
 
 **R2 — Baja adopción inicial:**
-- Mitigación: Usar el portafolio de clientes existentes del operador como empresas piloto. Ofrecer 3 meses sin costo de SaaS para las primeras 5 empresas.
-- Contingencia: Estrategia comercial activa con visitas presenciales y demos personalizadas.
+- Mitigación: Usar el portafolio de clientes existentes del operador como empresas piloto. La plataforma es 100% gratuita, eliminando la principal barrera de entrada. Ofrecer soporte de onboarding personalizado a las primeras 5-10 empresas.
+- Contingencia: Estrategia comercial activa con visitas presenciales, demos personalizadas y casos de éxito documentados.
 
 **R3 — Empresa empleadora no transfiere fondos:**
 - Mitigación: Contrato con penalidades claras. Suspensión automática del servicio ante mora. Descuento solo se hace efectivo cuando la empresa confirma en el sistema el pago de planilla.

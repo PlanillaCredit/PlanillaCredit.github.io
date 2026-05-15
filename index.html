@@ -605,7 +605,7 @@
     <a href="#pasos"><span class="icon">🚀</span> Próximos Pasos</a>
   </nav>
   <div class="sidebar-footer">
-    Elaborado por <strong>Uplabs AI</strong><br>Mayo 2026 · Confidencial
+    Elaborado por <strong>Servisofts Srl.</strong><br>Mayo 2026 · Confidencial
   </div>
 </aside>
 
@@ -674,8 +674,8 @@
       <div class="value-card">
         <div class="vc-icon" style="background:#fdf4ff">💎</div>
         <h3>Operador</h3>
-        <p>Tu empresa, ya regulada ante ASFI, opera la plataforma. Genera ingresos por SaaS mensual y comisiones por cada transacción.</p>
-        <div class="tag badge-purple">SaaS + Comisiones</div>
+        <p>Tu empresa, ya regulada ante ASFI, opera la plataforma. Plataforma GRATUITA para empresas. Genera ingresos únicamente por comisión sobre cada crédito ANTES del desembolso.</p>
+        <div class="tag badge-purple">100% Comisiones</div>
       </div>
     </div>
 
@@ -794,14 +794,29 @@
   <!-- MODELO DE NEGOCIO -->
   <section id="negocio">
     <div class="section-label">03 · Modelo de Negocio</div>
-    <h2 class="section-title">Fuentes de <span>Ingresos</span></h2>
-    <p class="section-desc">Modelo dual: SaaS mensual recurrente + comisión por transacción. Esto asegura ingresos predecibles desde el inicio y crecimiento proporcional al volumen de créditos.</p>
+    <h2 class="section-title">Modelo de <span>Ingresos</span></h2>
+    <p class="section-desc">Plataforma 100% GRATUITA para empresas empleadoras y proveedoras. El único ingreso es una comisión sobre cada crédito, cobrada ANTES del desembolso al proveedor. Esto elimina barreras de entrada y acelera la adopción.</p>
 
     <div class="card-grid grid-2" style="margin-top:32px">
       <div class="chart-box">
-        <h3>Distribución de Ingresos Estimados (Mes 12)</h3>
-        <div class="chart-container" style="height:250px">
-          <canvas id="ingresoChart"></canvas>
+        <h3>Flujo del Modelo</h3>
+        <div style="padding:24px;text-align:left">
+          <div style="margin-bottom:20px">
+            <div style="font-size:.85rem;font-weight:700;color:#059669;margin-bottom:4px">1. Empleado solicita crédito</div>
+            <div style="font-size:.75rem;color:#6b7280">Ejemplo: $1,000 a 12 meses</div>
+          </div>
+          <div style="margin-bottom:20px">
+            <div style="font-size:.85rem;font-weight:700;color:#2563eb;margin-bottom:4px">2. Empresa proveedora aprueba</div>
+            <div style="font-size:.75rem;color:#6b7280">Crédito garantizado por planilla</div>
+          </div>
+          <div style="margin-bottom:20px">
+            <div style="font-size:.85rem;font-weight:700;color:#dc2626;margin-bottom:4px">3. Plataforma cobra comisión</div>
+            <div style="font-size:.75rem;color:#6b7280">$25 (2.5% de $1,000) ANTES del desembolso</div>
+          </div>
+          <div>
+            <div style="font-size:.85rem;font-weight:700;color:#7c3aed;margin-bottom:4px">4. Proveedor recibe el neto</div>
+            <div style="font-size:.75rem;color:#6b7280">$975 transferidos al proveedor</div>
+          </div>
         </div>
       </div>
       <div class="chart-box">
@@ -812,65 +827,42 @@
       </div>
     </div>
 
-    <div class="card-grid grid-3" style="margin-top:24px">
-      <div class="model-card">
-        <div class="mc-tag">SaaS Mensual</div>
-        <h3>Empresa Empleadora</h3>
-        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
-            <span>Starter (hasta 50 emp.)</span><strong>$60/mes</strong>
+    <div style="margin-top:32px;max-width:800px;margin-left:auto;margin-right:auto">
+      <div class="card" style="background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border:2px solid #6ee7b7;padding:32px">
+        <div style="text-align:center;margin-bottom:24px">
+          <div class="mc-tag" style="display:inline-block;background:#059669;color:white;padding:6px 16px;border-radius:20px;font-size:.8rem;font-weight:700">ÚNICA FUENTE DE INGRESOS</div>
+          <h3 style="margin-top:16px;font-size:1.5rem;color:#065f46">Comisión por Crédito</h3>
+          <p style="color:#047857;margin-top:8px;font-size:.9rem">Cobrada ANTES del desembolso al proveedor</p>
+        </div>
+        
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">
+          <div style="padding:20px;background:white;border-radius:12px;border:1px solid #6ee7b7;text-align:center">
+            <div style="font-size:.85rem;font-weight:700;color:#065f46;text-transform:uppercase;margin-bottom:8px">Productos físicos a crédito</div>
+            <div style="font-size:2rem;font-weight:800;color:#059669">2.0% – 3.5%</div>
+            <div style="font-size:.75rem;color:#047857;margin-top:4px">del monto del crédito</div>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
-            <span>Business (51–200 emp.)</span><strong>$120/mes</strong>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:.8rem;border:1px solid #bfdbfe">
-            <span>Enterprise (201–500)</span><strong>$220/mes</strong>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
-            <span>Corporate (500+)</span><strong>A consultar</strong>
+          <div style="padding:20px;background:white;border-radius:12px;border:1px solid #93c5fd;text-align:center">
+            <div style="font-size:.85rem;font-weight:700;color:#1e40af;text-transform:uppercase;margin-bottom:8px">Préstamos en efectivo</div>
+            <div style="font-size:2rem;font-weight:800;color:#2563eb">1.5% – 2.5%</div>
+            <div style="font-size:.75rem;color:#3b82f6;margin-top:4px">del monto desembolsado</div>
           </div>
         </div>
-      </div>
-      <div class="model-card">
-        <div class="mc-tag">SaaS Mensual</div>
-        <h3>Empresa Proveedora</h3>
-        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
-            <span>Basic (hasta $10K cartera)</span><strong>$80/mes</strong>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:.8rem;border:1px solid #bfdbfe">
-            <span>Standard ($10K–$50K)</span><strong>$160/mes</strong>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
-            <span>Premium ($50K+)</span><strong>$300/mes</strong>
-          </div>
+
+        <div style="margin-top:20px;padding:16px;background:#dcfce7;border-radius:8px;border-left:4px solid #059669">
+          <div style="font-size:.85rem;font-weight:700;color:#065f46;margin-bottom:6px">💡 Ventaja Competitiva</div>
+          <p style="font-size:.82rem;color:#047857;line-height:1.6;margin:0">La plataforma es <strong>100% gratuita</strong> para empresas empleadoras y proveedoras. Sin costos de suscripción, sin tarifas mensuales. Solo nos pagás cuando generamos un crédito exitoso.</p>
         </div>
-      </div>
-      <div class="model-card">
-        <div class="mc-tag">Por Transacción</div>
-        <h3>Comisiones Variables</h3>
-        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
-          <div style="padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #6ee7b7">
-            <div style="font-size:.75rem;font-weight:700;color:#065f46">Productos físicos a crédito</div>
-            <div style="font-size:1.2rem;font-weight:800;color:#059669;margin-top:2px">2.0% – 3.5%</div>
-            <div style="font-size:.72rem;color:#047857">del monto del crédito</div>
-          </div>
-          <div style="padding:12px;background:#eff6ff;border-radius:8px;border:1px solid #93c5fd">
-            <div style="font-size:.75rem;font-weight:700;color:#1e40af">Préstamos en efectivo</div>
-            <div style="font-size:1.2rem;font-weight:800;color:#2563eb;margin-top:2px">1.5% – 2.5%</div>
-            <div style="font-size:.72rem;color:#3b82f6">del monto desembolsado</div>
-          </div>
-          <div style="padding:10px 12px;background:#fdf4ff;border-radius:8px;border:1px solid #d8b4fe">
-            <div style="font-size:.75rem;font-weight:700;color:#6b21a8">Cobranza activa (Fase 3)</div>
-            <div style="font-size:.78rem;color:#7c3aed;margin-top:2px">8% – 25% sobre monto recuperado</div>
-          </div>
+
+        <div style="margin-top:16px;padding:16px;background:#fdf4ff;border-radius:8px;border-left:4px solid #a855f7">
+          <div style="font-size:.85rem;font-weight:700;color:#6b21a8;margin-bottom:6px">🔮 Fase 3 (Futuro)</div>
+          <p style="font-size:.82rem;color:#7c3aed;line-height:1.6;margin:0">Cobranza activa para empleados que dejan la empresa: <strong>8% – 25%</strong> sobre monto recuperado</p>
         </div>
       </div>
     </div>
 
     <div class="card" style="margin-top:20px;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border-color:#6ee7b7">
       <h4 style="font-size:.9rem;font-weight:700;color:#065f46">📍 Punto de Equilibrio Operativo</h4>
-      <p style="font-size:.82rem;color:#047857;margin-top:6px;line-height:1.6">Con <strong>6 empresas empleadoras</strong> + <strong>4 empresas proveedoras</strong> + volumen mínimo de transacciones, la plataforma alcanza aproximadamente <strong>USD 1,500 – 2,000/mes</strong> de ingresos, cubriendo los costos operativos. A partir del mes 8–10, con 8–12 empresas afiliadas, se genera margen positivo consistente.</p>
+      <p style="font-size:.82rem;color:#047857;margin-top:6px;line-height:1.6">Sin costos de SaaS que cobrar, el punto de equilibrio depende únicamente del <strong>volumen de créditos</strong>. Con costos operativos mensuales de ~USD 1,500–2,000, se necesitan aproximadamente <strong>60-80 créditos al mes</strong> (promedio USD 500 @ 2.5% comisión) para alcanzar el equilibrio. Esto se logra con 6-10 empresas empleadoras y 4-6 proveedores activos. Tiempo estimado: <strong>8-12 meses</strong>.</p>
     </div>
   </section>
 
@@ -939,7 +931,7 @@
         <h3 style="font-size:.9rem;font-weight:700;color:var(--primary);margin:18px 0 10px">Riesgo Principal a Mitigar</h3>
         <div class="alert alert-amber" style="margin-top:0">
           <span class="alert-icon">⚠️</span>
-          <div>La <strong>adopción comercial inicial</strong> es el único reto real. Se resuelve arrancando con el portafolio del cliente y ofreciendo los primeros 3 meses de SaaS sin costo.</div>
+          <div>La <strong>adopción comercial inicial</strong> es el único reto real. Se resuelve arrancando con el portafolio del cliente (empresas con las que ya tiene relación) y ofreciendo la plataforma GRATUITA elimina completamente la barrera de entrada.</div>
         </div>
       </div>
     </div>
@@ -1070,7 +1062,7 @@
         <ul>
           <li>Gestión global de empresas y créditos</li>
           <li>Conciliación de pagos y distribución</li>
-          <li>Facturación SaaS automática</li>
+          <li>Cálculo y retención automática de comisiones</li>
           <li>Reportes para auditoría ASFI</li>
         </ul>
       </div>
@@ -1276,7 +1268,7 @@
           <div class="budget-item"><span>Infraestructura cloud</span><span>USD 150–400/mes</span></div>
           <div class="budget-item"><span>WhatsApp Business API</span><span>USD 0.03–0.08/msg</span></div>
           <div class="budget-item"><span>Email transaccional</span><span>USD 0–20/mes</span></div>
-          <div class="budget-item"><span>Mantenimiento Uplabs AI</span><span>USD 800–1,500/mes</span></div>
+          <div class="budget-item"><span>Mantenimiento Servisofts Srl.</span><span>USD 800–1,500/mes</span></div>
           <div style="padding:10px 0;font-weight:700;font-size:.85rem;color:var(--primary);border-top:2px solid var(--border);margin-top:4px">Total estimado sin mantenimiento: <span style="color:var(--green)">USD 200–500/mes</span></div>
         </div>
       </div>
@@ -1396,7 +1388,7 @@
           <div class="task-item">Definir Modelo A vs B para proveedores de crédito</div>
           <div class="task-item">Abrir cuenta bancaria exclusiva para la plataforma</div>
           <div class="task-item">Encargar los 4 contratos al abogado</div>
-          <div class="task-item">Firmar contrato de desarrollo con Uplabs AI</div>
+          <div class="task-item">Firmar contrato de desarrollo con Servisofts Srl.</div>
           <div class="task-item">Definir % máximo de crédito, plazos y tasas iniciales</div>
         </div>
         <div class="kpi-list">
@@ -1413,13 +1405,13 @@
         <div class="team-avatar" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">💻</div>
         <h3>Socio 2</h3>
         <div class="tc-role">CTO · Director de Tecnología y Producto</div>
-        <div class="tc-area">Supervisión de Uplabs AI · Decisiones técnicas · Infraestructura · Roadmap de producto</div>
+        <div class="tc-area">Supervisión de Servisofts Srl. · Decisiones técnicas · Infraestructura · Roadmap de producto</div>
         <div class="task-list">
           <h5>Tareas Mes 1 — Críticas</h5>
-          <div class="task-item">Kick-off técnico con Uplabs AI y validar arquitectura</div>
+          <div class="task-item">Kick-off técnico con Servisofts Srl. y validar arquitectura</div>
           <div class="task-item">Registrar servicios: AWS, GitHub, Resend, Twilio</div>
           <div class="task-item">Comprar dominio web (.bo y .com)</div>
-          <div class="task-item">Asistir al Workshop de UX con Uplabs AI</div>
+          <div class="task-item">Asistir al Workshop de UX con Servisofts Srl.</div>
           <div class="task-item">Conseguir Excel de planilla de empresa piloto</div>
           <div class="task-item">Entregar logo, colores y referencias de diseño</div>
         </div>
@@ -1475,7 +1467,7 @@
           <span class="badge badge-blue">Cada 2 semanas</span>
           <span class="badge badge-green">1 hora</span>
         </div>
-        <p>Los 3 socios + Uplabs AI. Demo funcional del sprint, feedback.</p>
+        <p>Los 3 socios + Servisofts Srl. Demo funcional del sprint, feedback.</p>
       </div>
       <div class="meeting-card">
         <h4>Revisión Comercial</h4>
@@ -1520,7 +1512,7 @@
           <div class="step-num" style="background:var(--red)">2</div>
           <div class="step-content">
             <h4>Aprobación del Proyecto y Contrato</h4>
-            <p>Revisión final de este documento, ajustes si aplica, firma del contrato de desarrollo con Uplabs AI y definición de opción de pago (A o B).</p>
+            <p>Revisión final de este documento, ajustes si aplica, firma del contrato de desarrollo con Servisofts Srl. y definición de opción de pago (A o B).</p>
             <div class="sc-meta">
               <span class="badge badge-red">Bloqueante</span>
               <span class="badge badge-amber">Socio 1</span>
@@ -1570,10 +1562,10 @@
           <div class="step-num">6</div>
           <div class="step-content">
             <h4>Workshop de UX + Inicio Sprint 1</h4>
-            <p>Sesión de 2–3 horas para validar flujos de usuario antes de diseñar. Luego: inicio formal del desarrollo con Uplabs AI.</p>
+            <p>Sesión de 2–3 horas para validar flujos de usuario antes de diseñar. Luego: inicio formal del desarrollo con Servisofts Srl.</p>
             <div class="sc-meta">
               <span class="badge badge-green">Planificado</span>
-              <span class="badge badge-amber">Todos + Uplabs AI</span>
+              <span class="badge badge-amber">Todos + Servisofts Srl.</span>
               <span class="badge badge-blue">Semana 3–5</span>
             </div>
           </div>
@@ -1583,12 +1575,12 @@
 
     <div class="alert alert-blue" style="margin-top:32px">
       <span class="alert-icon">💡</span>
-      <div><strong>Recomendación de Uplabs AI:</strong> La herramienta de gestión de tareas recomendada es <strong>Notion</strong> (plan gratis) — permite tener este documento del proyecto, el tablero de tareas de los 3 socios y las notas de cada reunión en un solo lugar accesible desde cualquier dispositivo.</div>
+      <div><strong>Recomendación de Servisofts Srl.:</strong> La herramienta de gestión de tareas recomendada es <strong>Notion</strong> (plan gratis) — permite tener este documento del proyecto, el tablero de tareas de los 3 socios y las notas de cada reunión en un solo lugar accesible desde cualquier dispositivo.</div>
     </div>
 
     <div style="text-align:center;padding:40px 0 10px">
       <div style="font-size:.82rem;color:var(--muted)">Documento elaborado por</div>
-      <div style="font-size:1.3rem;font-weight:800;color:var(--primary);margin:4px 0">Uplabs AI</div>
+      <div style="font-size:1.3rem;font-weight:800;color:var(--primary);margin:4px 0">Servisofts Srl.</div>
       <div style="font-size:.78rem;color:var(--muted)">Mayo 2026 · Versión 1.0 · Confidencial</div>
     </div>
   </section>

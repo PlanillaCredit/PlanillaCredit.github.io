@@ -10,7 +10,9 @@
 
 ## 1. RESUMEN EJECUTIVO
 
-Se propone el desarrollo de una plataforma SaaS B2B llamada provisionalmente **"PlanillaCredit"** que conecta tres actores: (1) empresas empleadoras que se suscriben para que su planilla acceda a créditos, (2) empresas proveedoras de productos/servicios a crédito, y (3) empleados como beneficiarios finales. El diferenciador central es el **descuento automático de cuotas vía planilla**, eliminando el riesgo de incobrabilidad y haciendo atractivo el crédito tanto para el proveedor como para el empleado.
+Se propone el desarrollo de una plataforma digital B2B llamada provisionalmente **"PlanillaCredit"** que conecta tres actores: (1) empresas empleadoras que afilian su planilla para que accedan a créditos, (2) empresas proveedoras de productos/servicios a crédito, y (3) empleados como beneficiarios finales. El diferenciador central es el **descuento automático de cuotas vía planilla**, eliminando el riesgo de incobrabilidad y haciendo atractivo el crédito tanto para el proveedor como para el empleado.
+
+**La plataforma es 100% GRATUITA** para empresas empleadoras y proveedoras. El operador genera ingresos únicamente por comisión sobre cada crédito originado.
 
 El operador de la plataforma es la empresa cliente (entidad financiera regulada ante ASFI Bolivia), lo que habilita legalmente la intermediación de créditos en efectivo.
 
@@ -37,8 +39,10 @@ El operador de la plataforma es la empresa cliente (entidad financiera regulada 
 - **Riesgo principal:** Adopción inicial — convencer a las primeras empresas empleadoras de integrar su planilla. Se recomienda arrancar con empresas del propio portafolio del cliente.
 
 ### 2.4 Factibilidad Financiera ✅ VIABLE
-- Modelo dual (SaaS mensual + comisión por transacción) asegura ingresos recurrentes desde el arranque.
-- El ticket promedio de crédito en Bolivia (electrodomésticos: USD 300-1,500; préstamos: USD 200-2,000) genera comisiones significativas con volumen moderado.
+- Modelo de comisiones puras elimina complejidad de facturación recurrente.
+- Plataforma gratuita acelera la adopción comercial significativamente.
+- El ticket promedio de crédito en Bolivia (electrodomésticos: USD 300-1,500; préstamos: USD 200-2,000) genera comisiones suficientes con volumen moderado.
+- Punto de equilibrio: ~120-150 créditos/mes (alcanzable con 6-10 empresas activas).
 
 ---
 
@@ -47,7 +51,7 @@ El operador de la plataforma es la empresa cliente (entidad financiera regulada 
 | Actor | Rol | Acceso |
 |-------|-----|--------|
 | **Administrador de Plataforma** | Operador (cliente Uplabs) | Panel maestro completo |
-| **Empresa Empleadora** | Se suscribe para que su planilla acceda a créditos | Portal empresa + integración planilla |
+| **Empresa Empleadora** | Afilia su planilla para que sus empleados accedan a créditos (GRATIS) | Portal empresa + integración planilla |
 | **Empresa Proveedora** | Ofrece productos/préstamos a crédito | Portal proveedor + catálogo + reportes |
 | **Empleado** | Solicita créditos/productos | App/portal empleado |
 | **RRHH de Empresa** | Gestiona descuentos de planilla | Módulo descuentos + reportes |
@@ -223,22 +227,32 @@ Empresa empleadora descuenta cuota de planilla del empleado
 
 ## 8. MODELO COMERCIAL DE LA PLATAFORMA
 
-### Ingresos para el Operador (tu cliente)
+### Modelo de Ingresos: 100% Gratuito + Comisiones
 
-| Fuente | Modelo | Estimación |
-|--------|--------|-----------|
-| **SaaS - Empresa Empleadora** | USD 50-150/mes según número de empleados | Recurrente |
-| **SaaS - Empresa Proveedora** | USD 80-200/mes según volumen de cartera | Recurrente |
-| **Comisión por transacción** | 1-3% sobre monto de cada crédito originado | Por transacción |
-| **Comisión de cobranza** | % sobre monto cobrado (si aplica gestión activa) | Por cobro |
+**La plataforma es completamente GRATUITA para empresas empleadoras y proveedoras.** No hay costos de suscripción, tarifas mensuales ni pagos recurrentes.
 
-### Proyección Conservadora (Año 1)
+### Única Fuente de Ingreso para el Operador
 
-| Período | Empresas | Empleados | Transacciones/mes | Ingreso estimado/mes |
-|---------|---------|-----------|-------------------|---------------------|
-| M1-M4 (MVP) | 2-3 | 100 | 20 | USD 1,500-2,500 |
-| M5-M8 | 5-7 | 300 | 80 | USD 4,000-7,000 |
-| M9-M12 | 8-12 | 600 | 200 | USD 9,000-15,000 |
+| Fuente | Modelo | Rango | Momento de Cobro |
+|--------|--------|-------|------------------|
+| **Comisión por transacción** | Porcentaje sobre cada crédito originado | 1.5% – 3.5% | **ANTES del desembolso al proveedor** |
+| **Comisión de cobranza (Fase 3)** | % sobre monto recuperado cuando empleado deja la empresa | 8% – 25% | Al recuperar el monto |
+
+**Ventajas del modelo:**
+- ✅ Cero barreras de entrada para empresas
+- ✅ Adopción acelerada sin fricción comercial
+- ✅ Incentivos alineados: solo ganamos cuando generamos valor
+- ✅ Cero riesgo de incobrabilidad (comisión se descuenta automáticamente del flujo de pago)
+
+### Proyección Conservadora (Año 1) — Solo Comisiones
+
+| Período | Empresas | Empleados | Créditos/mes | Ticket Prom. | Volumen/mes | Comisión | Ingreso/mes |
+|---------|---------|-----------|--------------|--------------|-------------|----------|-------------|
+| M1-M4 (MVP) | 2-3 | 100 | 10 | USD 400 | USD 4,000 | 2.5% | ~USD 100 |
+| M5-M8 | 5-7 | 300 | 60 | USD 500 | USD 30,000 | 2.5% | ~USD 750 |
+| M9-M12 | 8-12 | 600 | 150 | USD 600 | USD 90,000 | 2.5% | ~USD 2,250 |
+
+**Nota:** Los ingresos iniciales son menores que en un modelo SaaS+comisión, pero la velocidad de adopción es significativamente mayor. El punto de equilibrio se alcanza con mayor volumen transaccional pero menor cantidad de empresas.
 
 ---
 
