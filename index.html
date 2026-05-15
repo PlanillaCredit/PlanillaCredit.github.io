@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlanillaCredit — Documento de Proyecto</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #1e3a5f;
+    --primary-light: #2d5a8e;
+    --accent: #0ea5e9;
+    --green: #10b981;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --purple: #8b5cf6;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --sidebar-w: 260px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); display:flex; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: var(--sidebar-w);
+    min-height: 100vh;
+    background: var(--primary);
+    position: fixed;
+    top:0; left:0;
+    display:flex; flex-direction:column;
+    z-index:100;
+    overflow-y:auto;
+    transition: transform .3s;
+  }
+  .sidebar-logo {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+  .sidebar-logo h1 { color:#fff; font-size:1.3rem; font-weight:800; letter-spacing:-.5px; }
+  .sidebar-logo span { color:var(--accent); }
+  .sidebar-logo p { color:rgba(255,255,255,.5); font-size:.72rem; margin-top:4px; }
+  nav { padding: 16px 0; flex:1; }
+  nav a {
+    display:flex; align-items:center; gap:10px;
+    padding: 9px 20px;
+    color: rgba(255,255,255,.65);
+    text-decoration:none;
+    font-size:.8rem;
+    font-weight:500;
+    transition: all .2s;
+    border-left: 3px solid transparent;
+  }
+  nav a:hover, nav a.active {
+    color:#fff;
+    background: rgba(255,255,255,.08);
+    border-left-color: var(--accent);
+  }
+  nav .nav-section {
+    padding: 14px 20px 6px;
+    color: rgba(255,255,255,.3);
+    font-size:.65rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:1px;
+  }
+  nav .icon { font-size:1rem; width:18px; text-align:center; }
+  .sidebar-footer {
+    padding:16px 20px;
+    border-top:1px solid rgba(255,255,255,.1);
+    color:rgba(255,255,255,.4);
+    font-size:.7rem;
+  }
+  .sidebar-footer strong { color:var(--accent); }
+
+  /* MAIN */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex:1;
+    min-width:0;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #1a6e9f 60%, #0ea5e9 100%);
+    padding: 70px 60px 60px;
+    color:#fff;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute;
+    top:-80px; right:-80px;
+    width:400px; height:400px;
+    background: rgba(255,255,255,.04);
+    border-radius:50%;
+  }
+  .hero::after {
+    content:'';
+    position:absolute;
+    bottom:-120px; right:100px;
+    width:300px; height:300px;
+    background: rgba(255,255,255,.03);
+    border-radius:50%;
+  }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.2);
+    padding:5px 14px; border-radius:20px;
+    font-size:.75rem; font-weight:600;
+    margin-bottom:20px;
+  }
+  .hero h1 { font-size:3rem; font-weight:800; letter-spacing:-1px; line-height:1.1; }
+  .hero h1 span { color:#7dd3fc; }
+  .hero p { margin-top:14px; font-size:1.05rem; color:rgba(255,255,255,.8); max-width:600px; line-height:1.6; }
+  .hero-meta { display:flex; gap:12px; margin-top:24px; flex-wrap:wrap; }
+  .hero-meta span {
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.15);
+    padding:5px 14px; border-radius:6px;
+    font-size:.78rem; font-weight:500;
+  }
+  .kpi-grid {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+    margin-top:40px;
+  }
+  .kpi {
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:12px;
+    padding:20px;
+    backdrop-filter:blur(10px);
+  }
+  .kpi-label { font-size:.72rem; color:rgba(255,255,255,.6); font-weight:500; text-transform:uppercase; letter-spacing:.5px; }
+  .kpi-value { font-size:1.7rem; font-weight:800; margin-top:6px; color:#fff; }
+  .kpi-sub { font-size:.72rem; color:rgba(255,255,255,.5); margin-top:3px; }
+
+  /* SECTIONS */
+  section { padding:60px; }
+  section:nth-child(even) { background:#f8fafc; }
+  .section-label {
+    display:inline-flex; align-items:center; gap:8px;
+    background: linear-gradient(135deg,#eff6ff,#dbeafe);
+    color:var(--primary);
+    padding:5px 14px; border-radius:20px;
+    font-size:.72rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.8px;
+    margin-bottom:12px;
+    border:1px solid #bfdbfe;
+  }
+  h2.section-title { font-size:1.9rem; font-weight:800; color:var(--primary); letter-spacing:-.5px; }
+  h2.section-title span { color:var(--accent); }
+  .section-desc { color:var(--muted); margin-top:8px; font-size:.95rem; line-height:1.6; max-width:700px; }
+
+  /* CARDS */
+  .card {
+    background:var(--card);
+    border-radius:14px;
+    border:1px solid var(--border);
+    padding:24px;
+    box-shadow:0 1px 3px rgba(0,0,0,.06);
+  }
+  .card-grid { display:grid; gap:16px; margin-top:32px; }
+  .grid-2 { grid-template-columns:repeat(2,1fr); }
+  .grid-3 { grid-template-columns:repeat(3,1fr); }
+  .grid-4 { grid-template-columns:repeat(4,1fr); }
+
+  /* VALUE CARDS */
+  .value-card {
+    background:var(--card);
+    border-radius:14px;
+    border:1px solid var(--border);
+    padding:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .value-card .vc-icon {
+    width:46px; height:46px;
+    border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.4rem; margin-bottom:14px;
+  }
+  .value-card h3 { font-size:.95rem; font-weight:700; color:var(--text); }
+  .value-card p { font-size:.82rem; color:var(--muted); margin-top:6px; line-height:1.55; }
+  .value-card .tag {
+    display:inline-block;
+    margin-top:12px;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:.7rem;
+    font-weight:600;
+  }
+
+  /* BADGE */
+  .badge {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:3px 10px; border-radius:20px;
+    font-size:.72rem; font-weight:600;
+  }
+  .badge-green { background:#d1fae5; color:#065f46; }
+  .badge-amber { background:#fef3c7; color:#92400e; }
+  .badge-red { background:#fee2e2; color:#991b1b; }
+  .badge-blue { background:#dbeafe; color:#1e40af; }
+  .badge-purple { background:#ede9fe; color:#5b21b6; }
+
+  /* TABLE */
+  .table-wrap { overflow-x:auto; margin-top:24px; }
+  table { width:100%; border-collapse:collapse; font-size:.83rem; }
+  th {
+    background:var(--primary); color:#fff;
+    padding:10px 14px; text-align:left;
+    font-weight:600; font-size:.78rem;
+  }
+  th:first-child { border-radius:8px 0 0 8px; }
+  th:last-child { border-radius:0 8px 8px 0; }
+  td { padding:10px 14px; border-bottom:1px solid var(--border); color:var(--text); vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#f8fafc; }
+
+  /* LEGAL LAYERS */
+  .legal-layer {
+    display:flex; gap:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    margin-top:12px;
+    align-items:flex-start;
+  }
+  .layer-num {
+    width:36px; height:36px; min-width:36px;
+    border-radius:50%;
+    background:var(--primary);
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.85rem;
+  }
+  .layer-content h4 { font-size:.9rem; font-weight:700; color:var(--primary); }
+  .layer-content p { font-size:.8rem; color:var(--muted); margin-top:4px; line-height:1.5; }
+  .layer-content ul { margin-top:8px; padding-left:16px; }
+  .layer-content ul li { font-size:.78rem; color:var(--muted); margin-top:4px; line-height:1.5; }
+
+  /* MODEL CARDS */
+  .model-card {
+    background:var(--card);
+    border:2px solid var(--border);
+    border-radius:14px;
+    padding:24px;
+    transition: border-color .2s, transform .2s;
+  }
+  .model-card:hover { border-color:var(--accent); transform:translateY(-2px); }
+  .model-card.featured { border-color:var(--accent); }
+  .model-card .mc-tag {
+    font-size:.68rem; font-weight:700;
+    text-transform:uppercase; letter-spacing:.5px;
+    color:var(--accent);
+  }
+  .model-card h3 { font-size:1.05rem; font-weight:700; margin-top:6px; }
+  .model-card .mc-price { font-size:1.8rem; font-weight:800; color:var(--primary); margin-top:10px; }
+  .model-card .mc-price span { font-size:.85rem; font-weight:400; color:var(--muted); }
+  .model-card ul { margin-top:14px; list-style:none; }
+  .model-card ul li {
+    padding:5px 0;
+    font-size:.8rem; color:var(--muted);
+    border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:8px;
+  }
+  .model-card ul li:last-child { border-bottom:none; }
+  .model-card ul li::before { content:'✓'; color:var(--green); font-weight:700; }
+
+  /* FLOW */
+  .flow-step {
+    display:flex; align-items:flex-start; gap:16px;
+    margin-top:16px;
+    position:relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content:'';
+    position:absolute;
+    left:18px; top:46px;
+    width:2px; height:calc(100% - 10px);
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+  .flow-num {
+    width:36px; height:36px; min-width:36px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--primary));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.82rem;
+    box-shadow:0 4px 12px rgba(14,165,233,.3);
+  }
+  .flow-content { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 18px; flex:1; }
+  .flow-content h4 { font-size:.88rem; font-weight:700; color:var(--primary); }
+  .flow-content p { font-size:.78rem; color:var(--muted); margin-top:3px; line-height:1.5; }
+
+  /* MODULE CARDS */
+  .module-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px;
+    border-top:4px solid var(--accent);
+  }
+  .module-card h3 { font-size:.92rem; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:8px; }
+  .module-card p { font-size:.8rem; color:var(--muted); margin-top:8px; line-height:1.55; }
+  .module-card ul { margin-top:10px; list-style:none; }
+  .module-card ul li { font-size:.78rem; color:var(--muted); padding:3px 0; display:flex; align-items:flex-start; gap:7px; }
+  .module-card ul li::before { content:'→'; color:var(--accent); font-weight:700; margin-top:1px; }
+
+  /* TIMELINE */
+  .phase-block {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    overflow:hidden;
+    margin-top:16px;
+  }
+  .phase-header {
+    padding:16px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+    cursor:pointer;
+  }
+  .phase-header h3 { font-size:1rem; font-weight:700; display:flex; align-items:center; gap:10px; }
+  .phase-body { padding:0 24px 20px; }
+  .sprint-row {
+    display:grid; grid-template-columns:120px 1fr;
+    gap:12px; align-items:center;
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .sprint-row:last-child { border-bottom:none; }
+  .sprint-label { font-size:.75rem; font-weight:700; color:var(--primary); }
+  .sprint-bar {
+    background:#f1f5f9;
+    border-radius:6px;
+    padding:6px 12px;
+    font-size:.78rem;
+    color:var(--muted);
+    border-left:3px solid var(--accent);
+  }
+  .gantt-wrap { overflow-x:auto; margin-top:24px; }
+  .gantt { display:flex; flex-direction:column; gap:6px; min-width:700px; }
+  .gantt-row { display:grid; grid-template-columns:120px 1fr; gap:8px; align-items:center; }
+  .gantt-label { font-size:.75rem; font-weight:600; color:var(--primary); text-align:right; padding-right:8px; }
+  .gantt-track { background:#e2e8f0; border-radius:4px; height:28px; position:relative; }
+  .gantt-bar {
+    position:absolute; height:100%; border-radius:4px;
+    display:flex; align-items:center; padding:0 10px;
+    font-size:.7rem; font-weight:600; color:#fff;
+  }
+  .bar-f1 { background:linear-gradient(90deg,var(--primary),var(--primary-light)); left:0; width:36.4%; }
+  .bar-f2 { background:linear-gradient(90deg,var(--accent),#0284c7); left:27.3%; width:27.3%; }
+  .bar-f3 { background:linear-gradient(90deg,var(--green),#059669); left:54.5%; width:36.4%; }
+
+  /* TECH STACK */
+  .tech-chip {
+    display:inline-flex; align-items:center; gap:6px;
+    background:#f1f5f9;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:6px 12px;
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--text);
+    margin:4px;
+  }
+  .tech-chip .dot { width:8px; height:8px; border-radius:50%; }
+  .tech-group { margin-top:16px; }
+  .tech-group h4 { font-size:.78rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+
+  /* BUDGET */
+  .budget-total {
+    background:linear-gradient(135deg,var(--primary),var(--primary-light));
+    border-radius:14px;
+    padding:30px;
+    color:#fff;
+    text-align:center;
+  }
+  .budget-total .bt-label { font-size:.82rem; color:rgba(255,255,255,.7); font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .budget-total .bt-amount { font-size:3rem; font-weight:800; margin:8px 0; }
+  .budget-total .bt-sub { font-size:.82rem; color:rgba(255,255,255,.6); }
+  .budget-phase {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+  }
+  .budget-phase h4 { font-size:.88rem; font-weight:700; color:var(--primary); }
+  .budget-phase .bp-amount { font-size:1.4rem; font-weight:800; color:var(--accent); margin-top:4px; }
+  .budget-item { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid var(--border); font-size:.8rem; }
+  .budget-item:last-child { border-bottom:none; }
+  .budget-item span:first-child { color:var(--muted); }
+  .budget-item span:last-child { font-weight:600; color:var(--text); }
+
+  /* RISK MATRIX */
+  .risk-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px;
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .risk-num {
+    width:30px; height:30px; min-width:30px;
+    border-radius:8px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:.78rem; font-weight:800; color:#fff;
+  }
+  .risk-high { background:var(--red); }
+  .risk-medium { background:var(--amber); }
+  .risk-low { background:var(--green); }
+  .risk-content h4 { font-size:.82rem; font-weight:700; }
+  .risk-content p { font-size:.75rem; color:var(--muted); margin-top:3px; line-height:1.5; }
+
+  /* TEAM CARDS */
+  .team-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px;
+    text-align:center;
+  }
+  .team-avatar {
+    width:64px; height:64px;
+    border-radius:20px;
+    margin:0 auto 14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.6rem;
+  }
+  .team-card h3 { font-size:1rem; font-weight:800; color:var(--primary); }
+  .team-card .tc-role { font-size:.78rem; color:var(--accent); font-weight:600; margin-top:3px; }
+  .team-card .tc-area { font-size:.78rem; color:var(--muted); margin-top:6px; line-height:1.5; }
+  .task-list { margin-top:14px; text-align:left; }
+  .task-list h5 { font-size:.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+  .task-item {
+    display:flex; gap:8px; align-items:flex-start;
+    padding:5px 0;
+    border-bottom:1px solid var(--border);
+    font-size:.76rem; color:var(--text);
+  }
+  .task-item:last-child { border-bottom:none; }
+  .task-item::before { content:'◻'; color:var(--accent); font-size:.9rem; margin-top:-1px; }
+  .kpi-list { display:flex; flex-direction:column; gap:6px; margin-top:12px; }
+  .kpi-item {
+    background:#f8fafc;
+    border-radius:6px;
+    padding:7px 10px;
+    font-size:.75rem;
+    color:var(--muted);
+    border-left:3px solid var(--green);
+  }
+
+  /* NEXT STEPS */
+  .step-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px;
+    display:flex; gap:14px; align-items:flex-start;
+  }
+  .step-num {
+    width:40px; height:40px; min-width:40px;
+    border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--primary));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:.9rem;
+  }
+  .step-content h4 { font-size:.9rem; font-weight:700; color:var(--primary); }
+  .step-content p { font-size:.8rem; color:var(--muted); margin-top:4px; line-height:1.5; }
+  .step-content .sc-meta { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+
+  /* CHART WRAPPER */
+  .chart-box {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:24px;
+  }
+  .chart-box h3 { font-size:.9rem; font-weight:700; color:var(--primary); margin-bottom:16px; }
+  .chart-container { position:relative; }
+
+  /* FEASIBILITY */
+  .feasibility-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:24px; }
+  .feas-card {
+    background:var(--card);
+    border-radius:12px;
+    padding:20px 14px;
+    text-align:center;
+    border:1px solid var(--border);
+    border-top:4px solid var(--green);
+  }
+  .feas-card .feas-icon { font-size:1.6rem; margin-bottom:8px; }
+  .feas-card h4 { font-size:.78rem; font-weight:700; color:var(--primary); }
+  .feas-card .feas-status { font-size:.72rem; color:var(--green); font-weight:600; margin-top:4px; }
+  .feas-card .feas-risk { font-size:.7rem; color:var(--muted); margin-top:4px; }
+
+  /* ALERT BOX */
+  .alert {
+    border-radius:10px;
+    padding:16px 20px;
+    display:flex; gap:12px; align-items:flex-start;
+    margin-top:20px;
+    font-size:.82rem;
+    line-height:1.5;
+  }
+  .alert-amber { background:#fffbeb; border:1px solid #fcd34d; color:#92400e; }
+  .alert-blue { background:#eff6ff; border:1px solid #93c5fd; color:#1e40af; }
+  .alert-green { background:#ecfdf5; border:1px solid #6ee7b7; color:#065f46; }
+  .alert .alert-icon { font-size:1.1rem; margin-top:1px; }
+
+  /* MEETINGS */
+  .meeting-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:16px;
+  }
+  .meeting-card h4 { font-size:.88rem; font-weight:700; color:var(--primary); }
+  .meeting-meta { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .meeting-card p { font-size:.78rem; color:var(--muted); margin-top:6px; }
+
+  /* SEPARATOR */
+  .sep { height:1px; background:var(--border); margin:32px 0; }
+
+  /* MOBILE TOGGLE */
+  #menu-btn {
+    display:none;
+    position:fixed; top:16px; left:16px; z-index:200;
+    background:var(--primary); color:#fff;
+    border:none; border-radius:8px;
+    width:40px; height:40px;
+    font-size:1.2rem; cursor:pointer;
+    align-items:center; justify-content:center;
+  }
+
+  /* SCROLL TOP */
+  #scrolltop {
+    position:fixed; bottom:24px; right:24px;
+    background:var(--primary); color:#fff;
+    border:none; border-radius:50%;
+    width:42px; height:42px;
+    font-size:1.1rem; cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,.2);
+    display:none; align-items:center; justify-content:center;
+    z-index:99;
+    transition:opacity .2s;
+  }
+  #scrolltop.show { display:flex; }
+
+  @media(max-width:900px){
+    #sidebar { transform:translateX(-100%); }
+    #sidebar.open { transform:translateX(0); }
+    #main { margin-left:0; }
+    #menu-btn { display:flex; }
+    .hero { padding:70px 24px 40px; }
+    .kpi-grid { grid-template-columns:repeat(2,1fr); }
+    section { padding:40px 24px; }
+    .grid-2,.grid-3,.grid-4 { grid-template-columns:1fr; }
+    .feasibility-grid { grid-template-columns:repeat(3,1fr); }
+  }
+  @media(max-width:560px){
+    .hero h1 { font-size:2rem; }
+    .kpi-grid { grid-template-columns:1fr 1fr; }
+    .feasibility-grid { grid-template-columns:repeat(2,1fr); }
+  }
+</style>
+</head>
+<body>
+
+<button id="menu-btn" onclick="toggleSidebar()">☰</button>
+<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo">
+    <h1>Planilla<span>Credit</span></h1>
+    <p>Documento de Proyecto · v1.0</p>
+  </div>
+  <nav>
+    <div class="nav-section">Proyecto</div>
+    <a href="#resumen" class="active"><span class="icon">📋</span> Resumen Ejecutivo</a>
+    <a href="#legal"><span class="icon">⚖️</span> Marco Legal</a>
+    <a href="#negocio"><span class="icon">💼</span> Modelo de Negocio</a>
+    <a href="#factibilidad"><span class="icon">✅</span> Factibilidad</a>
+    <div class="nav-section">Plataforma</div>
+    <a href="#plataforma"><span class="icon">🖥️</span> La Plataforma</a>
+    <a href="#modulos"><span class="icon">🧩</span> Módulos</a>
+    <a href="#arquitectura"><span class="icon">🏗️</span> Arquitectura</a>
+    <div class="nav-section">Ejecución</div>
+    <a href="#implementacion"><span class="icon">📅</span> Plan de Impl.</a>
+    <a href="#presupuesto"><span class="icon">💰</span> Presupuesto</a>
+    <a href="#proyecciones"><span class="icon">📈</span> Proyecciones</a>
+    <a href="#riesgos"><span class="icon">⚠️</span> Riesgos</a>
+    <div class="nav-section">Equipo</div>
+    <a href="#socios"><span class="icon">👥</span> Roles de Socios</a>
+    <a href="#pasos"><span class="icon">🚀</span> Próximos Pasos</a>
+  </nav>
+  <div class="sidebar-footer">
+    Elaborado por <strong>Uplabs AI</strong><br>Mayo 2026 · Confidencial
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">🇧🇴 Bolivia · Fintech · SaaS</div>
+    <h1>Planilla<span>Credit</span></h1>
+    <p>Plataforma de crédito descontado por planilla que conecta empresas empleadoras, proveedores de productos/servicios y empleados en un ecosistema financiero seguro y automatizado.</p>
+    <div class="hero-meta">
+      <span>📄 Documento Integral de Proyecto</span>
+      <span>🏦 Operador con licencia ASFI</span>
+      <span>🔒 Confidencial — Mayo 2026</span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Inversión MVP</div>
+        <div class="kpi-value">$20,500</div>
+        <div class="kpi-sub">USD · Fase 1 (4 meses)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Proyecto Completo</div>
+        <div class="kpi-value">$46,000</div>
+        <div class="kpi-sub">USD · 3 fases · 11 meses</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">ROI Estimado Año 2</div>
+        <div class="kpi-value">180–240%</div>
+        <div class="kpi-sub">Sobre inversión total</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Empleados Año 1</div>
+        <div class="kpi-value">500–800</div>
+        <div class="kpi-sub">Usuarios activos en plataforma</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMEN EJECUTIVO -->
+  <section id="resumen">
+    <div class="section-label">01 · Resumen Ejecutivo</div>
+    <h2 class="section-title">¿Qué es <span>PlanillaCredit</span>?</h2>
+    <p class="section-desc">Una plataforma SaaS B2B que conecta tres actores dentro de un ecosistema de crédito. El diferenciador clave es el descuento automático de cuotas directamente de la planilla de salarios, eliminando el riesgo de mora para el proveedor y la carga de gestión para el empleado.</p>
+
+    <div class="card-grid grid-4" style="margin-top:32px">
+      <div class="value-card">
+        <div class="vc-icon" style="background:#eff6ff">👤</div>
+        <h3>Empleado</h3>
+        <p>Sin acceso a crédito bancario o tasas prohibitivas. Accede a crédito sin trámites, con descuento automático de planilla.</p>
+        <div class="tag badge-blue">Beneficiario final</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-icon" style="background:#f0fdf4">🏢</div>
+        <h3>Empresa Empleadora</h3>
+        <p>Empleados con estrés financiero afectan la productividad. Ofrece un beneficio laboral diferenciador sin costo para la empresa.</p>
+        <div class="tag badge-green">Sin costo directo</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-icon" style="background:#fefce8">🏪</div>
+        <h3>Empresa Proveedora</h3>
+        <p>Alto riesgo de mora en ventas a crédito. Obtiene cartera garantizada con cobro delegado a planilla y más volumen de ventas.</p>
+        <div class="tag badge-amber">Cartera garantizada</div>
+      </div>
+      <div class="value-card">
+        <div class="vc-icon" style="background:#fdf4ff">💎</div>
+        <h3>Operador</h3>
+        <p>Tu empresa, ya regulada ante ASFI, opera la plataforma. Genera ingresos por SaaS mensual y comisiones por cada transacción.</p>
+        <div class="tag badge-purple">SaaS + Comisiones</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+        <tbody>
+          <tr><td>País de operación inicial</td><td><strong>Bolivia</strong></td></tr>
+          <tr><td>Mercado objetivo</td><td>Empresas medianas con planilla formal</td></tr>
+          <tr><td>Proyección de usuarios (12 meses)</td><td><strong>500 – 800 empleados activos</strong></td></tr>
+          <tr><td>Tiempo al MVP</td><td><strong>4 meses</strong></td></tr>
+          <tr><td>Inversión total (3 fases)</td><td><strong>USD 46,000</strong></td></tr>
+          <tr><td>ROI estimado operador (Año 2)</td><td><strong>180% – 240%</strong></td></tr>
+          <tr><td>Punto de equilibrio</td><td>10 – 20 meses desde lanzamiento</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MARCO LEGAL -->
+  <section id="legal">
+    <div class="section-label">02 · Marco Legal y Regulatorio</div>
+    <h2 class="section-title">Base <span>Legal</span> en Bolivia</h2>
+    <p class="section-desc">Bolivia tiene un marco financiero regulado que impacta directamente en cómo opera la plataforma. El operador ya cuenta con licencia ASFI, lo que es la ventaja regulatoria más importante.</p>
+
+    <div class="alert alert-amber">
+      <span class="alert-icon">⚠️</span>
+      <div><strong>Punto crítico antes de iniciar el desarrollo:</strong> Definir si las empresas proveedoras de crédito en efectivo pueden operar bajo el paraguas del operador (Modelo A) o necesitan su propia licencia ASFI (Modelo B). Esta decisión es bloqueante.</div>
+    </div>
+
+    <div class="card-grid grid-2" style="margin-top:28px">
+      <div class="card">
+        <h3 style="font-size:.92rem;font-weight:700;color:var(--primary);margin-bottom:14px">📜 Leyes Aplicables</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#f8fafc;border-radius:8px;padding:12px">
+            <div style="font-size:.78rem;font-weight:700;color:var(--primary)">Ley de Servicios Financieros N° 393 (2013)</div>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:4px">Regula la intermediación crediticia. El operador ya cumple con esta ley al tener licencia ASFI.</div>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:12px">
+            <div style="font-size:.78rem;font-weight:700;color:var(--primary)">Código de Trabajo (Descuentos de planilla)</div>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:4px">Los descuentos requieren autorización escrita del trabajador. El salario no puede caer por debajo del SMN.</div>
+          </div>
+          <div style="background:#f8fafc;border-radius:8px;padding:12px">
+            <div style="font-size:.78rem;font-weight:700;color:var(--primary)">Ley N° 164 + DS N° 1793 (Firma Electrónica)</div>
+            <div style="font-size:.75rem;color:var(--muted);margin-top:4px">Reconoce la validez legal de la firma electrónica en Bolivia. Compatible con contratos digitales de la plataforma.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:.92rem;font-weight:700;color:var(--primary);margin-bottom:14px">🔐 Modelo A vs Modelo B</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#ecfdf5;border:1px solid #6ee7b7;border-radius:8px;padding:14px">
+            <div style="font-size:.78rem;font-weight:700;color:#065f46">✅ Modelo A — Canal Exclusivo (Recomendado para MVP)</div>
+            <div style="font-size:.75rem;color:#047857;margin-top:6px">Solo el operador otorga créditos en efectivo. Los proveedores ofrecen solo productos físicos/servicios. Menor complejidad regulatoria.</div>
+          </div>
+          <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px">
+            <div style="font-size:.78rem;font-weight:700;color:#92400e">⚠️ Modelo B — Marketplace (Fase 3)</div>
+            <div style="font-size:.75rem;color:#b45309;margin-top:6px">Otras entidades financieras ASFI pueden ofrecer crédito en efectivo. Mayor potencial pero requiere verificación de licencias y más compliance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="font-size:1rem;font-weight:700;color:var(--primary);margin-top:32px;margin-bottom:4px">🔗 Los 4 Contratos Necesarios</h3>
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:8px">La plataforma requiere cuatro capas de contratos para operar legalmente.</p>
+
+    <div class="legal-layer">
+      <div class="layer-num">1</div>
+      <div class="layer-content">
+        <h4>Contrato de Afiliación — Empresa Empleadora ↔ Plataforma</h4>
+        <ul>
+          <li>Obligación de descontar cuotas de planilla antes del pago al empleado.</li>
+          <li>Transferir fondos dentro de X días hábiles del pago de planilla.</li>
+          <li>Consecuencias del incumplimiento (multas, suspensión, acción legal).</li>
+          <li>Responsabilidad ante baja o despido de empleados con crédito activo.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal-layer">
+      <div class="layer-num">2</div>
+      <div class="layer-content">
+        <h4>Contrato de Proveedor — Empresa Proveedora ↔ Plataforma</h4>
+        <ul>
+          <li>Condiciones de oferta de productos/créditos en la plataforma.</li>
+          <li>Comisiones que cobra la plataforma por cada transacción.</li>
+          <li>Flujo de liquidación de pagos (plazos, cuentas bancarias).</li>
+          <li>Verificación de habilitación legal si ofrece crédito en efectivo.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal-layer">
+      <div class="layer-num">3</div>
+      <div class="layer-content">
+        <h4>Consentimiento del Empleado — Empleado ↔ Plataforma ↔ Empresa</h4>
+        <ul>
+          <li>Consentimiento expreso e informado para el descuento de planilla.</li>
+          <li>Reconocimiento del empleado como deudor y la empresa como canal de pago.</li>
+          <li>Cláusula de qué ocurre si el empleado deja de trabajar en la empresa.</li>
+          <li>Política de privacidad y uso de datos personales.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal-layer">
+      <div class="layer-num">4</div>
+      <div class="layer-content">
+        <h4>Contrato de Crédito — Empleado ↔ Proveedor u Operador</h4>
+        <ul>
+          <li>Contrato formal conforme a regulación ASFI.</li>
+          <li>Plan de pagos detallado con TEA informada.</li>
+          <li>Firma electrónica con valor legal (OTP o ADSIB).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODELO DE NEGOCIO -->
+  <section id="negocio">
+    <div class="section-label">03 · Modelo de Negocio</div>
+    <h2 class="section-title">Fuentes de <span>Ingresos</span></h2>
+    <p class="section-desc">Modelo dual: SaaS mensual recurrente + comisión por transacción. Esto asegura ingresos predecibles desde el inicio y crecimiento proporcional al volumen de créditos.</p>
+
+    <div class="card-grid grid-2" style="margin-top:32px">
+      <div class="chart-box">
+        <h3>Distribución de Ingresos Estimados (Mes 12)</h3>
+        <div class="chart-container" style="height:250px">
+          <canvas id="ingresoChart"></canvas>
+        </div>
+      </div>
+      <div class="chart-box">
+        <h3>Costo Operativo Mensual</h3>
+        <div class="chart-container" style="height:250px">
+          <canvas id="costoChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid grid-3" style="margin-top:24px">
+      <div class="model-card">
+        <div class="mc-tag">SaaS Mensual</div>
+        <h3>Empresa Empleadora</h3>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
+            <span>Starter (hasta 50 emp.)</span><strong>$60/mes</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
+            <span>Business (51–200 emp.)</span><strong>$120/mes</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:.8rem;border:1px solid #bfdbfe">
+            <span>Enterprise (201–500)</span><strong>$220/mes</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
+            <span>Corporate (500+)</span><strong>A consultar</strong>
+          </div>
+        </div>
+      </div>
+      <div class="model-card">
+        <div class="mc-tag">SaaS Mensual</div>
+        <h3>Empresa Proveedora</h3>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
+            <span>Basic (hasta $10K cartera)</span><strong>$80/mes</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#eff6ff;border-radius:8px;font-size:.8rem;border:1px solid #bfdbfe">
+            <span>Standard ($10K–$50K)</span><strong>$160/mes</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.8rem">
+            <span>Premium ($50K+)</span><strong>$300/mes</strong>
+          </div>
+        </div>
+      </div>
+      <div class="model-card">
+        <div class="mc-tag">Por Transacción</div>
+        <h3>Comisiones Variables</h3>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+          <div style="padding:12px;background:#f0fdf4;border-radius:8px;border:1px solid #6ee7b7">
+            <div style="font-size:.75rem;font-weight:700;color:#065f46">Productos físicos a crédito</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#059669;margin-top:2px">2.0% – 3.5%</div>
+            <div style="font-size:.72rem;color:#047857">del monto del crédito</div>
+          </div>
+          <div style="padding:12px;background:#eff6ff;border-radius:8px;border:1px solid #93c5fd">
+            <div style="font-size:.75rem;font-weight:700;color:#1e40af">Préstamos en efectivo</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#2563eb;margin-top:2px">1.5% – 2.5%</div>
+            <div style="font-size:.72rem;color:#3b82f6">del monto desembolsado</div>
+          </div>
+          <div style="padding:10px 12px;background:#fdf4ff;border-radius:8px;border:1px solid #d8b4fe">
+            <div style="font-size:.75rem;font-weight:700;color:#6b21a8">Cobranza activa (Fase 3)</div>
+            <div style="font-size:.78rem;color:#7c3aed;margin-top:2px">8% – 25% sobre monto recuperado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:20px;background:linear-gradient(135deg,#f0fdf4,#ecfdf5);border-color:#6ee7b7">
+      <h4 style="font-size:.9rem;font-weight:700;color:#065f46">📍 Punto de Equilibrio Operativo</h4>
+      <p style="font-size:.82rem;color:#047857;margin-top:6px;line-height:1.6">Con <strong>6 empresas empleadoras</strong> + <strong>4 empresas proveedoras</strong> + volumen mínimo de transacciones, la plataforma alcanza aproximadamente <strong>USD 1,500 – 2,000/mes</strong> de ingresos, cubriendo los costos operativos. A partir del mes 8–10, con 8–12 empresas afiliadas, se genera margen positivo consistente.</p>
+    </div>
+  </section>
+
+  <!-- FACTIBILIDAD -->
+  <section id="factibilidad">
+    <div class="section-label">04 · Análisis de Factibilidad</div>
+    <h2 class="section-title">¿Es <span>Viable</span> el Proyecto?</h2>
+    <p class="section-desc">Evaluación en 5 dimensiones. Resultado: el proyecto es totalmente viable con acciones previas bien definidas.</p>
+
+    <div class="feasibility-grid">
+      <div class="feas-card">
+        <div class="feas-icon">⚖️</div>
+        <h4>Legal</h4>
+        <div class="feas-status">✅ VIABLE</div>
+        <div class="feas-risk">Riesgo: Bajo–Medio</div>
+      </div>
+      <div class="feas-card">
+        <div class="feas-icon">💻</div>
+        <h4>Técnica</h4>
+        <div class="feas-status">✅ VIABLE</div>
+        <div class="feas-risk">Riesgo: Bajo</div>
+      </div>
+      <div class="feas-card">
+        <div class="feas-icon">📊</div>
+        <h4>Comercial</h4>
+        <div class="feas-status">✅ VIABLE</div>
+        <div class="feas-risk">Riesgo: Medio</div>
+      </div>
+      <div class="feas-card">
+        <div class="feas-icon">💵</div>
+        <h4>Financiera</h4>
+        <div class="feas-status">✅ VIABLE</div>
+        <div class="feas-risk">Riesgo: Bajo</div>
+      </div>
+      <div class="feas-card">
+        <div class="feas-icon">⚙️</div>
+        <h4>Operativa</h4>
+        <div class="feas-status">✅ VIABLE</div>
+        <div class="feas-risk">Riesgo: Bajo</div>
+      </div>
+    </div>
+
+    <div class="card-grid grid-2" style="margin-top:24px">
+      <div class="chart-box">
+        <h3>Radar de Factibilidad</h3>
+        <div class="chart-container" style="height:280px">
+          <canvas id="radarChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:14px">Ventajas del Operador</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="alert alert-green" style="margin-top:0;padding:10px 14px">
+            <span>🏦</span><span>Licencia ASFI ya vigente — la ventaja regulatoria más importante</span>
+          </div>
+          <div class="alert alert-green" style="margin-top:0;padding:10px 14px">
+            <span>🤝</span><span>Portafolio de clientes existentes para las primeras empresas piloto</span>
+          </div>
+          <div class="alert alert-green" style="margin-top:0;padding:10px 14px">
+            <span>⚡</span><span>Experiencia en cobranza — gestiona casos especiales sin aprendizaje</span>
+          </div>
+          <div class="alert alert-green" style="margin-top:0;padding:10px 14px">
+            <span>📋</span><span>Conocimiento del marco ASFI — no hay curva regulatoria</span>
+          </div>
+        </div>
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--primary);margin:18px 0 10px">Riesgo Principal a Mitigar</h3>
+        <div class="alert alert-amber" style="margin-top:0">
+          <span class="alert-icon">⚠️</span>
+          <div>La <strong>adopción comercial inicial</strong> es el único reto real. Se resuelve arrancando con el portafolio del cliente y ofreciendo los primeros 3 meses de SaaS sin costo.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATAFORMA -->
+  <section id="plataforma">
+    <div class="section-label">05 · La Plataforma</div>
+    <h2 class="section-title">Cómo <span>Funciona</span></h2>
+    <p class="section-desc">PlanillaCredit tiene 5 portales diferenciados según el actor y un flujo de vida del crédito completamente automatizado.</p>
+
+    <div class="card-grid grid-2" style="margin-top:28px">
+      <div>
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--primary);margin-bottom:16px">🔄 Flujo Completo de un Crédito</h3>
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-content"><h4>Empresa Empleadora se registra y carga planilla</h4><p>Vía Excel o API. El sistema detecta altas, bajas y cambios automáticamente.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-content"><h4>Sistema calcula la capacidad crediticia</h4><p>Salario Neto × % configurado por empresa − cuotas activas = capacidad disponible.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-content"><h4>Empleado elige y solicita el crédito</h4><p>Navega el catálogo, simula cuotas y firma digitalmente el contrato vía OTP.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-content"><h4>Proveedor aprueba y entrega</h4><p>Producto físico: coordina entrega. Préstamo en efectivo: desembolso inmediato.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-content"><h4>Empresa descuenta de la planilla</h4><p>Fin de mes: el sistema genera el reporte exacto por empleado. La empresa transfiere el total a la plataforma.</p></div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-content"><h4>Plataforma distribuye y retiene comisión</h4><p>Distribución automática a cada proveedor. La plataforma retiene su comisión. El ciclo se repite mensualmente.</p></div>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:.95rem;font-weight:700;color:var(--primary);margin-bottom:16px">🖥️ Los 5 Portales</h3>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:10px;padding:14px 18px;color:#fff">
+            <div style="font-size:.7rem;font-weight:700;opacity:.7;text-transform:uppercase;letter-spacing:.5px">Portal Maestro</div>
+            <div style="font-weight:700;margin-top:3px">🛡️ Administrador de Plataforma</div>
+            <div style="font-size:.78rem;opacity:.8;margin-top:4px">Gestión global, conciliación de pagos, auditoría, reportes ASFI.</div>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid #6ee7b7;border-radius:10px;padding:14px 18px">
+            <div style="font-size:.7rem;font-weight:700;color:#065f46;text-transform:uppercase;letter-spacing:.5px">Portal Empresa</div>
+            <div style="font-weight:700;color:#047857;margin-top:3px">🏢 Empresa Empleadora (RRHH)</div>
+            <div style="font-size:.78rem;color:#059669;margin-top:4px">Carga de planilla, reporte de descuentos, registro de transferencias.</div>
+          </div>
+          <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px 18px">
+            <div style="font-size:.7rem;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.5px">Portal Proveedor</div>
+            <div style="font-weight:700;color:#b45309;margin-top:3px">🏪 Empresa Proveedora</div>
+            <div style="font-size:.78rem;color:#d97706;margin-top:4px">Solicitudes, gestión de cartera, catálogo, reportes financieros.</div>
+          </div>
+          <div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:10px;padding:14px 18px">
+            <div style="font-size:.7rem;font-weight:700;color:#1e40af;text-transform:uppercase;letter-spacing:.5px">Portal + App</div>
+            <div style="font-weight:700;color:#1d4ed8;margin-top:3px">👤 Empleado</div>
+            <div style="font-size:.78rem;color:#2563eb;margin-top:4px">Solicitud de crédito, simulador, historial, notificaciones (Fase 2: app iOS/Android).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÓDULOS -->
+  <section id="modulos">
+    <div class="section-label">06 · Módulos del Sistema</div>
+    <h2 class="section-title">7 <span>Módulos</span> Core</h2>
+    <p class="section-desc">Cada módulo cubre un área específica del ecosistema. Todos se desarrollan en la Fase 1 (MVP), excepto la app móvil que es Fase 2.</p>
+
+    <div class="card-grid grid-3" style="margin-top:28px">
+      <div class="module-card">
+        <h3><span>1</span> Onboarding de Empresas</h3>
+        <p>Registro, verificación y configuración de empresas empleadoras y proveedoras.</p>
+        <ul>
+          <li>Formulario con datos legales y NIT</li>
+          <li>Subida de documentos de verificación</li>
+          <li>Configuración del % de crédito por empresa</li>
+          <li>Firma digital del contrato de afiliación</li>
+        </ul>
+      </div>
+      <div class="module-card" style="border-top-color:var(--green)">
+        <h3><span>2</span> Gestión de Planilla</h3>
+        <p>Integración con la planilla de empleados vía Excel o API REST.</p>
+        <ul>
+          <li>Template Excel descargable</li>
+          <li>Detección automática de altas/bajas</li>
+          <li>Motor de cálculo de capacidad crediticia</li>
+          <li>API con Swagger + sandbox para pruebas</li>
+        </ul>
+      </div>
+      <div class="module-card" style="border-top-color:var(--purple)">
+        <h3><span>3</span> Portal del Empleado</h3>
+        <p>Interfaz donde el empleado solicita, simula y hace seguimiento de sus créditos.</p>
+        <ul>
+          <li>Dashboard con capacidad disponible</li>
+          <li>Catálogo de productos filtrado por cuota</li>
+          <li>Simulador de crédito interactivo</li>
+          <li>Firma OTP y seguimiento en tiempo real</li>
+        </ul>
+      </div>
+      <div class="module-card" style="border-top-color:var(--amber)">
+        <h3><span>4</span> Portal Proveedor</h3>
+        <p>Gestión de solicitudes entrantes, cartera activa y catálogo de productos.</p>
+        <ul>
+          <li>Bandeja de solicitudes con aprobación rápida</li>
+          <li>Vista de historial crediticio del empleado</li>
+          <li>Gestión de cartera y estado de cuotas</li>
+          <li>Reportes financieros y proyección de cobros</li>
+        </ul>
+      </div>
+      <div class="module-card" style="border-top-color:var(--red)">
+        <h3><span>5</span> Portal RRHH</h3>
+        <p>Herramientas para el área de RRHH de la empresa empleadora.</p>
+        <ul>
+          <li>Reporte mensual de descuentos por empleado</li>
+          <li>Exportación compatible con sistemas de planilla</li>
+          <li>Confirmación de planilla procesada</li>
+          <li>Gestión de empleados con deuda que se van</li>
+        </ul>
+      </div>
+      <div class="module-card" style="border-top-color:#8b5cf6">
+        <h3><span>6</span> Panel Administrador</h3>
+        <p>Centro de control para el operador de la plataforma.</p>
+        <ul>
+          <li>Gestión global de empresas y créditos</li>
+          <li>Conciliación de pagos y distribución</li>
+          <li>Facturación SaaS automática</li>
+          <li>Reportes para auditoría ASFI</li>
+        </ul>
+      </div>
+      <div class="module-card" style="border-top-color:#06b6d4;grid-column:1/-1;max-width:400px">
+        <h3><span>7</span> Notificaciones Multicanal</h3>
+        <p>Email + WhatsApp Business API + SMS + Push App — Notificaciones automáticas en cada evento del ciclo crediticio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARQUITECTURA -->
+  <section id="arquitectura">
+    <div class="section-label">07 · Arquitectura Técnica</div>
+    <h2 class="section-title">Stack <span>Tecnológico</span></h2>
+    <p class="section-desc">TypeScript de punta a punta (frontend, backend y mobile). PostgreSQL para garantizar transacciones ACID en operaciones financieras. Arquitectura multi-tenant escalable desde el primer día.</p>
+
+    <div class="card-grid grid-2" style="margin-top:28px">
+      <div class="card">
+        <div class="tech-group">
+          <h4>🖥️ Frontend Web</h4>
+          <div><span class="tech-chip"><span class="dot" style="background:#000"></span>Next.js 14</span><span class="tech-chip"><span class="dot" style="background:#3178c6"></span>TypeScript</span><span class="tech-chip"><span class="dot" style="background:#06b6d4"></span>Tailwind CSS</span><span class="tech-chip"><span class="dot" style="background:#1f2937"></span>shadcn/ui</span></div>
+        </div>
+        <div class="tech-group" style="margin-top:16px">
+          <h4>📱 App Móvil (Fase 2)</h4>
+          <div><span class="tech-chip"><span class="dot" style="background:#61dafb"></span>React Native</span><span class="tech-chip"><span class="dot" style="background:#000"></span>Expo SDK 51</span><span class="tech-chip"><span class="dot" style="background:#3178c6"></span>TypeScript</span></div>
+        </div>
+        <div class="tech-group" style="margin-top:16px">
+          <h4>⚙️ Backend</h4>
+          <div><span class="tech-chip"><span class="dot" style="background:#e0234e"></span>NestJS</span><span class="tech-chip"><span class="dot" style="background:#339933"></span>Node.js</span><span class="tech-chip"><span class="dot" style="background:#3178c6"></span>TypeScript</span><span class="tech-chip"><span class="dot" style="background:#336791"></span>Prisma ORM</span></div>
+        </div>
+        <div class="tech-group" style="margin-top:16px">
+          <h4>🗄️ Datos e Infraestructura</h4>
+          <div><span class="tech-chip"><span class="dot" style="background:#336791"></span>PostgreSQL 16</span><span class="tech-chip"><span class="dot" style="background:#dc382d"></span>Redis</span><span class="tech-chip"><span class="dot" style="background:#ff9900"></span>AWS S3</span><span class="tech-chip"><span class="dot" style="background:#000"></span>Railway</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:14px">🔐 Seguridad por Capas</h3>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Transporte</span><span class="badge badge-green">TLS 1.3 + HSTS</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Autenticación</span><span class="badge badge-blue">JWT + Refresh Token</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Autorización</span><span class="badge badge-purple">RBAC por portal y acción</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">2FA</span><span class="badge badge-amber">Obligatorio para RRHH y Admin</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Base de datos</span><span class="badge badge-green">AES-256 en reposo</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Auditoría</span><span class="badge badge-blue">Logs inmutables</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Backups</span><span class="badge badge-green">Automático diario · 30 días</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:#f8fafc;border-radius:8px;font-size:.78rem">
+            <span style="color:var(--muted)">Vulnerabilidades</span><span class="badge badge-purple">OWASP Top 10 por release</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLEMENTACIÓN -->
+  <section id="implementacion">
+    <div class="section-label">08 · Plan de Implementación</div>
+    <h2 class="section-title">3 Fases, <span>11 Meses</span></h2>
+    <p class="section-desc">Sprints de 2 semanas con demo funcional al cierre de cada uno. El cliente revisa el avance cada 2 semanas y tiene un ambiente de staging siempre disponible.</p>
+
+    <div class="gantt-wrap">
+      <div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:8px;padding-left:128px">MAY &nbsp;&nbsp;&nbsp; JUN &nbsp;&nbsp;&nbsp; JUL &nbsp;&nbsp;&nbsp; AGO &nbsp;&nbsp;&nbsp;&nbsp; SEP &nbsp;&nbsp;&nbsp;&nbsp; OCT &nbsp;&nbsp;&nbsp;&nbsp; NOV &nbsp;&nbsp;&nbsp;&nbsp; DIC &nbsp;&nbsp;&nbsp;&nbsp; ENE&nbsp;&nbsp;&nbsp;&nbsp; FEB&nbsp;&nbsp;&nbsp;&nbsp; MAR</div>
+      <div class="gantt">
+        <div class="gantt-row">
+          <div class="gantt-label">FASE 1 · MVP</div>
+          <div class="gantt-track"><div class="gantt-bar bar-f1">MVP — 4 meses</div></div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-label">FASE 2 · Consol.</div>
+          <div class="gantt-track"><div class="gantt-bar bar-f2">Consolidación — 3 meses</div></div>
+        </div>
+        <div class="gantt-row">
+          <div class="gantt-label">FASE 3 · Escal.</div>
+          <div class="gantt-track"><div class="gantt-bar bar-f3">Escalamiento — 4 meses</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-block" style="margin-top:24px">
+      <div class="phase-header" style="background:#f0f9ff;border-bottom:1px solid var(--border)">
+        <h3><span style="background:var(--primary);color:#fff;padding:3px 10px;border-radius:6px;font-size:.78rem">FASE 1</span> MVP — 4 Meses · USD 20,500</h3>
+        <span class="badge badge-blue">8 sprints</span>
+      </div>
+      <div class="phase-body" style="padding-top:16px">
+        <div class="sprint-row"><div class="sprint-label">Sprint 1–2</div><div class="sprint-bar">Arquitectura base, infraestructura cloud, autenticación y roles, CI/CD</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 3–4</div><div class="sprint-bar">Onboarding empresas (empleadora y proveedora), panel admin básico</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 5–6</div><div class="sprint-bar">Carga de planilla Excel, motor de capacidad crediticia, catálogo de productos</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 7–8</div><div class="sprint-bar">Portal empleado, solicitud de crédito, firma OTP, módulo de descuentos RRHH</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 9–10</div><div class="sprint-bar">Flujo de pagos, distribución a proveedores, notificaciones WhatsApp/email</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 11–12</div><div class="sprint-bar">Reportes básicos, testing integral, correcciones, deploy a producción ✅</div></div>
+      </div>
+    </div>
+
+    <div class="phase-block" style="margin-top:12px">
+      <div class="phase-header" style="background:#f0fdf4;border-bottom:1px solid var(--border)">
+        <h3><span style="background:var(--green);color:#fff;padding:3px 10px;border-radius:6px;font-size:.78rem">FASE 2</span> Consolidación — 3 Meses · USD 13,500</h3>
+        <span class="badge badge-green">6 sprints</span>
+      </div>
+      <div class="phase-body" style="padding-top:16px">
+        <div class="sprint-row"><div class="sprint-label">Sprint 1–2</div><div class="sprint-bar">API de integración de planilla (Swagger + sandbox + documentación)</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 3–4</div><div class="sprint-bar">Gestión de casos especiales: baja de empleados, mora, refinanciación</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 5–6</div><div class="sprint-bar">App móvil iOS + Android (React Native) — login, solicitud, notificaciones push</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 7–8</div><div class="sprint-bar">Reportes avanzados, dashboard ejecutivo, pruebas de carga y auditoría OWASP</div></div>
+      </div>
+    </div>
+
+    <div class="phase-block" style="margin-top:12px">
+      <div class="phase-header" style="background:#fdf4ff;border-bottom:1px solid var(--border)">
+        <h3><span style="background:var(--purple);color:#fff;padding:3px 10px;border-radius:6px;font-size:.78rem">FASE 3</span> Escalamiento — 4 Meses · USD 12,000</h3>
+        <span class="badge badge-purple">8 sprints</span>
+      </div>
+      <div class="phase-body" style="padding-top:16px">
+        <div class="sprint-row"><div class="sprint-label">Sprint 1–4</div><div class="sprint-bar">Integración INFOCRED (Buró de Crédito Bolivia) + motor de scoring interno</div></div>
+        <div class="sprint-row"><div class="sprint-label">Sprint 5–8</div><div class="sprint-bar">API pública para sistemas externos + módulo de ofertas + preparación multi-país</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRESUPUESTO -->
+  <section id="presupuesto">
+    <div class="section-label">09 · Presupuesto de Desarrollo</div>
+    <h2 class="section-title">Inversión y <span>Opciones</span></h2>
+    <p class="section-desc">Dos opciones de contratación. La opción por fases permite validar el negocio con el MVP antes de comprometer la inversión completa.</p>
+
+    <div class="card-grid grid-3" style="margin-top:32px">
+      <div class="budget-total" style="grid-column:1/2">
+        <div class="bt-label">Proyecto Completo (3 Fases)</div>
+        <div class="bt-amount">$46,000</div>
+        <div class="bt-sub">USD · 11 meses de desarrollo</div>
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.8);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.15)">
+            <span>Fase 1 — MVP</span><strong>$20,500</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.8);padding:6px 0;border-bottom:1px solid rgba(255,255,255,.15)">
+            <span>Fase 2 — Consolidación</span><strong>$13,500</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;color:rgba(255,255,255,.8);padding:6px 0">
+            <span>Fase 3 — Escalamiento</span><strong>$12,000</strong>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="budget-phase">
+          <h4>Fase 1 — MVP</h4>
+          <div class="bp-amount">USD 20,500</div>
+          <div style="margin-top:12px">
+            <div class="budget-item"><span>Diseño UI/UX</span><span>$2,500</span></div>
+            <div class="budget-item"><span>Arquitectura + Setup</span><span>$2,000</span></div>
+            <div class="budget-item"><span>Backend Core</span><span>$4,500</span></div>
+            <div class="budget-item"><span>Backend Flujos</span><span>$3,500</span></div>
+            <div class="budget-item"><span>Frontend (5 portales)</span><span>$5,500</span></div>
+            <div class="budget-item"><span>QA + Testing</span><span>$1,500</span></div>
+            <div class="budget-item"><span>Deploy + Docs</span><span>$1,000</span></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="budget-phase">
+          <h4>Fase 2 — Consolidación</h4>
+          <div class="bp-amount">USD 13,500</div>
+          <div style="margin-top:12px">
+            <div class="budget-item"><span>API de planilla</span><span>$2,500</span></div>
+            <div class="budget-item"><span>App móvil iOS+Android</span><span>$6,000</span></div>
+            <div class="budget-item"><span>Casos especiales</span><span>$1,500</span></div>
+            <div class="budget-item"><span>Reportes avanzados</span><span>$2,000</span></div>
+            <div class="budget-item"><span>Pruebas + Seguridad</span><span>$1,500</span></div>
+          </div>
+        </div>
+        <div class="card" style="background:#f0fdf4;border-color:#6ee7b7">
+          <h4 style="font-size:.82rem;font-weight:700;color:#065f46">💡 Opción B — Llave en Mano (F1+F2)</h4>
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;margin:6px 0">USD 30,000</div>
+          <div style="font-size:.75rem;color:#047857">Ahorro de USD 4,000 (13%) vs. precio por fases</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid grid-2" style="margin-top:24px">
+      <div class="card">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:14px">📅 Estructura de Pagos — Opción A</h3>
+        <div>
+          <div class="budget-item"><span>Firma del contrato · 35%</span><span style="color:var(--green);font-weight:700">USD 7,175</span></div>
+          <div class="budget-item"><span>Entrega Sprint 4 · 30%</span><span style="color:var(--green);font-weight:700">USD 6,150</span></div>
+          <div class="budget-item"><span>Aceptación MVP · 25%</span><span style="color:var(--green);font-weight:700">USD 5,125</span></div>
+          <div class="budget-item"><span>Cierre Fase 1 · 10%</span><span style="color:var(--green);font-weight:700">USD 2,050</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--primary);margin-bottom:14px">☁️ Costos Recurrentes Post-Lanzamiento</h3>
+        <div>
+          <div class="budget-item"><span>Infraestructura cloud</span><span>USD 150–400/mes</span></div>
+          <div class="budget-item"><span>WhatsApp Business API</span><span>USD 0.03–0.08/msg</span></div>
+          <div class="budget-item"><span>Email transaccional</span><span>USD 0–20/mes</span></div>
+          <div class="budget-item"><span>Mantenimiento Uplabs AI</span><span>USD 800–1,500/mes</span></div>
+          <div style="padding:10px 0;font-weight:700;font-size:.85rem;color:var(--primary);border-top:2px solid var(--border);margin-top:4px">Total estimado sin mantenimiento: <span style="color:var(--green)">USD 200–500/mes</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROYECCIONES -->
+  <section id="proyecciones">
+    <div class="section-label">10 · Proyecciones Financieras</div>
+    <h2 class="section-title">Crecimiento <span>Proyectado</span></h2>
+    <p class="section-desc">Proyección conservadora basada en 5–10 empresas y ~500 empleados en los primeros 12 meses de operación.</p>
+
+    <div class="card-grid grid-2" style="margin-top:32px">
+      <div class="chart-box" style="grid-column:1/-1">
+        <h3>Ingresos Mensuales Proyectados — Año 1 (USD)</h3>
+        <div class="chart-container" style="height:300px">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid grid-3" style="margin-top:20px">
+      <div class="card" style="text-align:center;border-top:4px solid var(--accent)">
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase">Ingresos Acumulados Año 1</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--primary);margin:8px 0">$35K–55K</div>
+        <div style="font-size:.78rem;color:var(--muted)">USD estimados (escenario conservador)</div>
+      </div>
+      <div class="card" style="text-align:center;border-top:4px solid var(--green)">
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase">Ingresos Mensuales Año 2</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--green);margin:8px 0">$11.5K–24K</div>
+        <div style="font-size:.78rem;color:var(--muted)">USD/mes con 15–25 empresas afiliadas</div>
+      </div>
+      <div class="card" style="text-align:center;border-top:4px solid var(--purple)">
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase">Margen Operativo Año 2</div>
+        <div style="font-size:2rem;font-weight:800;color:var(--purple);margin:8px 0">$9K–21K</div>
+        <div style="font-size:.78rem;color:var(--muted)">USD/mes neto después de costos operativos</div>
+      </div>
+    </div>
+
+    <div class="card-grid grid-3" style="margin-top:20px">
+      <div class="card" style="background:linear-gradient(135deg,#fff7ed,#fff);border-color:#fed7aa">
+        <h4 style="font-size:.85rem;font-weight:700;color:#c2410c">🐌 Escenario Conservador</h4>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:6px">Punto de equilibrio en <strong>20 meses</strong>. Ingresos mensuales de USD 1,500 al alcanzarlo.</p>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#f0fdf4,#fff);border-color:#6ee7b7">
+        <h4 style="font-size:.85rem;font-weight:700;color:#065f46">📈 Escenario Moderado</h4>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:6px">Punto de equilibrio en <strong>14 meses</strong>. Ingresos mensuales de USD 3,000 al alcanzarlo.</p>
+      </div>
+      <div class="card" style="background:linear-gradient(135deg,#eff6ff,#fff);border-color:#93c5fd">
+        <h4 style="font-size:.85rem;font-weight:700;color:#1e40af">🚀 Escenario Optimista</h4>
+        <p style="font-size:.78rem;color:var(--muted);margin-top:6px">Punto de equilibrio en <strong>10 meses</strong>. Ingresos mensuales de USD 5,000 al alcanzarlo.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIESGOS -->
+  <section id="riesgos">
+    <div class="section-label">11 · Gestión de Riesgos</div>
+    <h2 class="section-title">Riesgos y <span>Mitigaciones</span></h2>
+    <p class="section-desc">10 riesgos identificados. 3 clasificados como ALTO, 5 como MEDIO, 2 como BAJO. Todos tienen plan de mitigación definido.</p>
+
+    <div class="card-grid grid-2" style="margin-top:28px">
+      <div class="chart-box">
+        <h3>Distribución de Riesgos por Nivel</h3>
+        <div class="chart-container" style="height:240px">
+          <canvas id="riesgoChart"></canvas>
+        </div>
+      </div>
+      <div>
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--red);margin-bottom:12px">🔴 Riesgos ALTO</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="risk-card">
+            <div class="risk-num risk-high">R1</div>
+            <div class="risk-content"><h4>Modelo legal de proveedores sin licencia ASFI</h4><p>Mitigación: Consulta legal antes de iniciar. Arrancar con Modelo A.</p></div>
+          </div>
+          <div class="risk-card">
+            <div class="risk-num risk-high">R2</div>
+            <div class="risk-content"><h4>Baja adopción inicial de empresas empleadoras</h4><p>Mitigación: Usar portafolio existente. Ofrecer 3 meses de SaaS gratis.</p></div>
+          </div>
+          <div class="risk-card">
+            <div class="risk-num risk-high">R3</div>
+            <div class="risk-content"><h4>Empresa empleadora no transfiere los fondos</h4><p>Mitigación: Contrato con penalidades + suspensión automática del servicio.</p></div>
+          </div>
+        </div>
+        <h3 style="font-size:.9rem;font-weight:700;color:var(--amber);margin:16px 0 12px">🟡 Riesgos MEDIO (seleccionados)</h3>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div class="risk-card">
+            <div class="risk-num risk-medium">R4</div>
+            <div class="risk-content"><h4>Empleado abandona empresa con deuda activa</h4><p>Mitigación: Contrato tripartito con opciones claras + proceso de cobranza.</p></div>
+          </div>
+          <div class="risk-card">
+            <div class="risk-num risk-medium">R7</div>
+            <div class="risk-content"><h4>Brecha de seguridad o acceso no autorizado</h4><p>Mitigación: Auditoría OWASP antes de cada lanzamiento. 2FA obligatorio.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIOS -->
+  <section id="socios">
+    <div class="section-label">12 · Equipo de Socios</div>
+    <h2 class="section-title">Roles y <span>Responsabilidades</span></h2>
+    <p class="section-desc">Tres socios, tres áreas críticas. Cada rol tiene tareas concretas con fechas para que el proyecto arranque estructurado y sin bloqueos.</p>
+
+    <div class="card-grid grid-3" style="margin-top:32px">
+
+      <!-- SOCIO 1 -->
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#1e3a5f,#2d5a8e)">💼</div>
+        <h3>Socio 1</h3>
+        <div class="tc-role">CEO · Director General y Financiero-Legal</div>
+        <div class="tc-area">Regulación ASFI · Contratos · Finanzas del proyecto · Decisiones estratégicas</div>
+        <div class="task-list">
+          <h5>Tareas Mes 1 — Críticas</h5>
+          <div class="task-item">Contratar abogado especialista ASFI (bloquea el inicio del desarrollo)</div>
+          <div class="task-item">Definir Modelo A vs B para proveedores de crédito</div>
+          <div class="task-item">Abrir cuenta bancaria exclusiva para la plataforma</div>
+          <div class="task-item">Encargar los 4 contratos al abogado</div>
+          <div class="task-item">Firmar contrato de desarrollo con Uplabs AI</div>
+          <div class="task-item">Definir % máximo de crédito, plazos y tasas iniciales</div>
+        </div>
+        <div class="kpi-list">
+          <h5 style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">KPIs</h5>
+          <div class="kpi-item">Contratos listos antes del Sprint 6</div>
+          <div class="kpi-item">Cuenta bancaria operativa antes del Sprint 7</div>
+          <div class="kpi-item">Modelo legal definido antes del Sprint 1</div>
+          <div class="kpi-item">Marca registrada en SENAPI antes del lanzamiento</div>
+        </div>
+      </div>
+
+      <!-- SOCIO 2 -->
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)">💻</div>
+        <h3>Socio 2</h3>
+        <div class="tc-role">CTO · Director de Tecnología y Producto</div>
+        <div class="tc-area">Supervisión de Uplabs AI · Decisiones técnicas · Infraestructura · Roadmap de producto</div>
+        <div class="task-list">
+          <h5>Tareas Mes 1 — Críticas</h5>
+          <div class="task-item">Kick-off técnico con Uplabs AI y validar arquitectura</div>
+          <div class="task-item">Registrar servicios: AWS, GitHub, Resend, Twilio</div>
+          <div class="task-item">Comprar dominio web (.bo y .com)</div>
+          <div class="task-item">Asistir al Workshop de UX con Uplabs AI</div>
+          <div class="task-item">Conseguir Excel de planilla de empresa piloto</div>
+          <div class="task-item">Entregar logo, colores y referencias de diseño</div>
+        </div>
+        <div class="kpi-list">
+          <h5 style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">KPIs</h5>
+          <div class="kpi-item">Infraestructura cloud operativa antes del Sprint 1</div>
+          <div class="kpi-item">Dominio y servicios configurados antes del Sprint 2</div>
+          <div class="kpi-item">Feedback de cada sprint en menos de 3 días</div>
+          <div class="kpi-item">App móvil publicada en ambas tiendas en Fase 2</div>
+        </div>
+      </div>
+
+      <!-- SOCIO 3 -->
+      <div class="team-card">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">📣</div>
+        <h3>Socio 3</h3>
+        <div class="tc-role">CCO · Director Comercial y de Alianzas</div>
+        <div class="tc-area">Ventas · Empresas piloto · Proveedores · Marketing · Relaciones con el mercado</div>
+        <div class="task-list">
+          <h5>Tareas Mes 1 — Críticas</h5>
+          <div class="task-item">Confirmar 2 empresas empleadoras piloto</div>
+          <div class="task-item">Confirmar 1 empresa proveedora piloto</div>
+          <div class="task-item">Lista de 20 empresas objetivo con contacto</div>
+          <div class="task-item">Reunirse con RRHH de empresa piloto</div>
+          <div class="task-item">Validar precio SaaS con el mercado boliviano</div>
+          <div class="task-item">Definir propuesta de valor comercial por tipo de empresa</div>
+        </div>
+        <div class="kpi-list">
+          <h5 style="font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">KPIs</h5>
+          <div class="kpi-item">2 empresas empleadoras piloto antes del Sprint 3</div>
+          <div class="kpi-item">1 empresa proveedora antes del Sprint 4</div>
+          <div class="kpi-item">5+ empresas activas el día del lanzamiento</div>
+          <div class="kpi-item">10+ empresas activas al mes 10</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <h3 style="font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:16px">📅 Cadencia de Reuniones del Equipo</h3>
+    <div class="card-grid grid-4">
+      <div class="meeting-card">
+        <h4>Stand-up Semanal</h4>
+        <div class="meeting-meta">
+          <span class="badge badge-blue">Cada lunes</span>
+          <span class="badge badge-green">30 min</span>
+        </div>
+        <p>Los 3 socios. Avances, bloqueos y prioridades de la semana.</p>
+      </div>
+      <div class="meeting-card">
+        <h4>Revisión de Sprint</h4>
+        <div class="meeting-meta">
+          <span class="badge badge-blue">Cada 2 semanas</span>
+          <span class="badge badge-green">1 hora</span>
+        </div>
+        <p>Los 3 socios + Uplabs AI. Demo funcional del sprint, feedback.</p>
+      </div>
+      <div class="meeting-card">
+        <h4>Revisión Comercial</h4>
+        <div class="meeting-meta">
+          <span class="badge badge-amber">Mensual</span>
+          <span class="badge badge-green">1 hora</span>
+        </div>
+        <p>Socio 1 + Socio 3. Pipeline de empresas, precios y contratos.</p>
+      </div>
+      <div class="meeting-card">
+        <h4>Revisión Financiera</h4>
+        <div class="meeting-meta">
+          <span class="badge badge-amber">Mensual</span>
+          <span class="badge badge-green">30 min</span>
+        </div>
+        <p>Socio 1 + Socio 2. Gastos del proyecto, proyecciones y pagos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRÓXIMOS PASOS -->
+  <section id="pasos">
+    <div class="section-label">13 · Próximos Pasos</div>
+    <h2 class="section-title">¿Qué Hacemos <span>Ahora?</span></h2>
+    <p class="section-desc">Los pasos 1, 2 y 3 son bloqueantes — el desarrollo no puede iniciar sin ellos. Los demás se ejecutan en paralelo.</p>
+
+    <div class="card-grid grid-2" style="margin-top:28px">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="step-card" style="border-left:4px solid var(--red)">
+          <div class="step-num" style="background:var(--red)">1</div>
+          <div class="step-content">
+            <h4>Validación Legal — Modelo A vs B</h4>
+            <p>Consulta con abogado especialista ASFI. Definir si las empresas proveedoras de crédito en efectivo requieren licencia propia.</p>
+            <div class="sc-meta">
+              <span class="badge badge-red">Bloqueante</span>
+              <span class="badge badge-amber">Socio 1</span>
+              <span class="badge badge-blue">Semana 1–2</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-card" style="border-left:4px solid var(--red)">
+          <div class="step-num" style="background:var(--red)">2</div>
+          <div class="step-content">
+            <h4>Aprobación del Proyecto y Contrato</h4>
+            <p>Revisión final de este documento, ajustes si aplica, firma del contrato de desarrollo con Uplabs AI y definición de opción de pago (A o B).</p>
+            <div class="sc-meta">
+              <span class="badge badge-red">Bloqueante</span>
+              <span class="badge badge-amber">Socio 1</span>
+              <span class="badge badge-blue">Semana 1–2</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-card" style="border-left:4px solid var(--red)">
+          <div class="step-num" style="background:var(--red)">3</div>
+          <div class="step-content">
+            <h4>Identidad de Marca</h4>
+            <p>Nombre final de la plataforma, logotipo, colores corporativos, dominio web (.bo / .com). Sin esto no se puede iniciar el diseño UI.</p>
+            <div class="sc-meta">
+              <span class="badge badge-red">Bloqueante</span>
+              <span class="badge badge-amber">Los 3 socios</span>
+              <span class="badge badge-blue">Semana 2</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div class="step-card" style="border-left:4px solid var(--accent)">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Kick-off Comercial</h4>
+            <p>Identificar y comprometer las 2–3 primeras empresas empleadoras piloto (del portafolio actual). Confirmar 1 empresa proveedora.</p>
+            <div class="sc-meta">
+              <span class="badge badge-blue">Urgente</span>
+              <span class="badge badge-green">Socio 3</span>
+              <span class="badge badge-blue">Semana 2–3</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-card" style="border-left:4px solid var(--accent)">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Infraestructura y Servicios</h4>
+            <p>Registrar AWS/Railway, GitHub, Resend, Twilio. Comprar dominio. Configurar DNS. Estos son requisitos técnicos del Sprint 1.</p>
+            <div class="sc-meta">
+              <span class="badge badge-blue">Urgente</span>
+              <span class="badge badge-green">Socio 2</span>
+              <span class="badge badge-blue">Semana 1–2</span>
+            </div>
+          </div>
+        </div>
+        <div class="step-card" style="border-left:4px solid var(--green)">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Workshop de UX + Inicio Sprint 1</h4>
+            <p>Sesión de 2–3 horas para validar flujos de usuario antes de diseñar. Luego: inicio formal del desarrollo con Uplabs AI.</p>
+            <div class="sc-meta">
+              <span class="badge badge-green">Planificado</span>
+              <span class="badge badge-amber">Todos + Uplabs AI</span>
+              <span class="badge badge-blue">Semana 3–5</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert alert-blue" style="margin-top:32px">
+      <span class="alert-icon">💡</span>
+      <div><strong>Recomendación de Uplabs AI:</strong> La herramienta de gestión de tareas recomendada es <strong>Notion</strong> (plan gratis) — permite tener este documento del proyecto, el tablero de tareas de los 3 socios y las notas de cada reunión en un solo lugar accesible desde cualquier dispositivo.</div>
+    </div>
+
+    <div style="text-align:center;padding:40px 0 10px">
+      <div style="font-size:.82rem;color:var(--muted)">Documento elaborado por</div>
+      <div style="font-size:1.3rem;font-weight:800;color:var(--primary);margin:4px 0">Uplabs AI</div>
+      <div style="font-size:.78rem;color:var(--muted)">Mayo 2026 · Versión 1.0 · Confidencial</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+// SIDEBAR TOGGLE
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  const sb=document.getElementById('sidebar');
+  const btn=document.getElementById('menu-btn');
+  if(sb.classList.contains('open')&&!sb.contains(e.target)&&!btn.contains(e.target)){
+    sb.classList.remove('open');
+  }
+});
+
+// SCROLL TOP
+window.addEventListener('scroll',()=>{
+  const btn=document.getElementById('scrolltop');
+  btn.classList.toggle('show',window.scrollY>400);
+});
+
+// ACTIVE NAV
+const sections=document.querySelectorAll('section,[id]');
+const navLinks=document.querySelectorAll('nav a');
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      navLinks.forEach(l=>l.classList.remove('active'));
+      const active=document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if(active)active.classList.add('active');
+    }
+  });
+},{threshold:0.3});
+sections.forEach(s=>{if(s.id)observer.observe(s);});
+
+// CHART DEFAULTS
+Chart.defaults.font.family='Inter';
+Chart.defaults.color='#64748b';
+
+// INGRESOS CHART (donut)
+new Chart(document.getElementById('ingresoChart'),{
+  type:'doughnut',
+  data:{
+    labels:['SaaS Empleadoras','SaaS Proveedoras','Comisiones Transacción','Cobranza'],
+    datasets:[{
+      data:[1800,900,4500,500],
+      backgroundColor:['#1e3a5f','#0ea5e9','#10b981','#8b5cf6'],
+      borderWidth:0,
+      hoverOffset:6
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{padding:12,font:{size:11}}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.label}: $${ctx.parsed.toLocaleString()}/mes`}}
+    },
+    cutout:'65%'
+  }
+});
+
+// COSTOS CHART (bar)
+new Chart(document.getElementById('costoChart'),{
+  type:'bar',
+  data:{
+    labels:['Infraestructura','Notificaciones','Mantenimiento','Soporte','Licencias'],
+    datasets:[{
+      label:'Costo mensual (USD)',
+      data:[275,60,1150,450,150],
+      backgroundColor:['#1e3a5f','#0ea5e9','#10b981','#f59e0b','#8b5cf6'],
+      borderRadius:6,
+      borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      y:{grid:{color:'#f1f5f9'},ticks:{callback:v=>`$${v}`}},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// RADAR CHART
+new Chart(document.getElementById('radarChart'),{
+  type:'radar',
+  data:{
+    labels:['Legal','Técnica','Comercial','Financiera','Operativa'],
+    datasets:[{
+      label:'Nivel de Factibilidad',
+      data:[85,95,78,88,90],
+      backgroundColor:'rgba(14,165,233,.15)',
+      borderColor:'#0ea5e9',
+      pointBackgroundColor:'#0ea5e9',
+      pointBorderColor:'#fff',
+      pointHoverBackgroundColor:'#fff',
+      pointHoverBorderColor:'#0ea5e9',
+      borderWidth:2,
+      pointRadius:4
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'#e2e8f0'},pointLabels:{font:{size:12,weight:'600'},color:'#1e3a5f'}}},
+    plugins:{legend:{display:false}}
+  }
+});
+
+// REVENUE CHART (line)
+new Chart(document.getElementById('revenueChart'),{
+  type:'bar',
+  data:{
+    labels:['Mes 3','Mes 4','Mes 5','Mes 6','Mes 7','Mes 8','Mes 9','Mes 10','Mes 11','Mes 12'],
+    datasets:[
+      {
+        label:'Ingresos SaaS (USD)',
+        data:[140,140,300,500,800,800,1200,1200,1800,1800],
+        backgroundColor:'rgba(30,58,95,.7)',
+        borderRadius:4,
+        stack:'ingresos'
+      },
+      {
+        label:'Comisiones (USD)',
+        data:[300,300,750,1200,2100,2100,3300,3300,5400,5400],
+        backgroundColor:'rgba(14,165,233,.8)',
+        borderRadius:4,
+        stack:'ingresos'
+      },
+      {
+        type:'line',
+        label:'Total Ingresos (USD)',
+        data:[440,440,1050,1700,2900,2900,4500,4500,7200,7200],
+        borderColor:'#10b981',
+        backgroundColor:'transparent',
+        borderWidth:2.5,
+        pointBackgroundColor:'#10b981',
+        pointRadius:5,
+        tension:.3
+      }
+    ]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'top',labels:{padding:16,font:{size:11}}},
+      tooltip:{mode:'index',intersect:false,callbacks:{label:ctx=>`${ctx.dataset.label}: $${ctx.parsed.y.toLocaleString()}`}}
+    },
+    scales:{
+      y:{grid:{color:'#f1f5f9'},ticks:{callback:v=>`$${v.toLocaleString()}`},stacked:false},
+      x:{grid:{display:false}}
+    }
+  }
+});
+
+// RIESGO CHART
+new Chart(document.getElementById('riesgoChart'),{
+  type:'doughnut',
+  data:{
+    labels:['ALTO','MEDIO','BAJO'],
+    datasets:[{
+      data:[3,5,2],
+      backgroundColor:['#ef4444','#f59e0b','#10b981'],
+      borderWidth:0,
+      hoverOffset:6
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{position:'bottom',labels:{padding:16,font:{size:12},usePointStyle:true}},
+      tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.parsed} riesgo${ctx.parsed>1?'s':''}`}}
+    },
+    cutout:'60%'
+  }
+});
+</script>
+</body>
+</html>
